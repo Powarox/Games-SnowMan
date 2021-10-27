@@ -28,6 +28,8 @@
     <button @keyup.left="moove_player('left')" @keyup.up="moove_player('up')" @keyup.down="moove_player('down')" @keyup.right="moove_player('right')">clavier</button>
 
     <button @click="test_moove()">test</button>
+
+    <button @click="stardog()">Stardog</button>
 </template>
 
 <script>
@@ -43,6 +45,27 @@
                 this.grid[3].state = 'none';
                 console.log(this.grid);
                 this.build_grid;
+            },
+
+            stardog(){
+              const { Connection, query } = require('stardog');
+
+              const conn = new Connection({
+                  username: 'admin',
+                  password: 'admin',
+                  endpoint: 'http://localhost:5820',
+              });
+
+              let request = 'SELECT ?Cell WHERE {?Cell rdf:type grid:PlayerCell.}';
+
+              query.execute(conn, 'stardog', request, 'application/sparql-results+json', {
+                  limit: 10,
+                  offset: 0,
+                  reasoning: true
+              }).then(({ body }) => {
+                  // console.log(body.results.bindings);
+                  console.log(body.results.bindings[0].Cell.value);
+              });
             }
         },
         computed: {
