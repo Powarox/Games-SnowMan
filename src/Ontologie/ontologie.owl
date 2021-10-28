@@ -1,0 +1,1253 @@
+@prefix : <http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/firer/ontologies/2021/9/grille> .
+
+<http://www.semanticweb.org/firer/ontologies/2021/9/grille> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#hasEast
+:hasEast rdf:type owl:ObjectProperty ;
+         rdfs:domain :Cell ;
+         rdfs:range :Cell .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#hasNorth
+:hasNorth rdf:type owl:ObjectProperty ;
+          rdfs:domain :Cell ;
+          rdfs:range :Cell .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#hasSouth
+:hasSouth rdf:type owl:ObjectProperty ;
+          rdfs:domain :Cell ;
+          rdfs:range :Cell .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#hasWest
+:hasWest rdf:type owl:ObjectProperty ;
+         rdfs:domain :Cell ;
+         rdfs:range :Cell .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#X
+:X rdf:type owl:DatatypeProperty .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Y
+:Y rdf:type owl:DatatypeProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/grille#Ball1
+:Ball1 rdf:type owl:Class ;
+       rdfs:subClassOf :NotWall .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/grille#Ball2
+:Ball2 rdf:type owl:Class ;
+       rdfs:subClassOf :NotWall .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/grille#Ball3
+:Ball3 rdf:type owl:Class ;
+       rdfs:subClassOf :NotWall .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell
+:Cell rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#NotWall
+:NotWall rdf:type owl:Class ;
+         rdfs:subClassOf :Cell .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#PlayerCell
+:PlayerCell rdf:type owl:Class ;
+            rdfs:subClassOf :NotWall .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Wall
+:Wall rdf:type owl:Class ;
+      rdfs:subClassOf :Cell .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#isEast
+:isEast rdf:type owl:Class ;
+        owl:equivalentClass [ owl:intersectionOf ( :NotWall
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty :hasWest ;
+                                                     owl:someValuesFrom :PlayerCell
+                                                   ]
+                                                 ) ;
+                              rdf:type owl:Class
+                            ] ;
+        rdfs:subClassOf :NotWall .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#isNorth
+:isNorth rdf:type owl:Class ;
+         owl:equivalentClass [ owl:intersectionOf ( :NotWall
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty :hasSouth ;
+                                                      owl:someValuesFrom :PlayerCell
+                                                    ]
+                                                  ) ;
+                               rdf:type owl:Class
+                             ] ;
+         rdfs:subClassOf :NotWall .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#isSouth
+:isSouth rdf:type owl:Class ;
+         owl:equivalentClass [ owl:intersectionOf ( :NotWall
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty :hasNorth ;
+                                                      owl:someValuesFrom :PlayerCell
+                                                    ]
+                                                  ) ;
+                               rdf:type owl:Class
+                             ] ;
+         rdfs:subClassOf :NotWall .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#isWest
+:isWest rdf:type owl:Class ;
+        owl:equivalentClass [ owl:intersectionOf ( :NotWall
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty :hasEast ;
+                                                     owl:someValuesFrom :PlayerCell
+                                                   ]
+                                                 ) ;
+                              rdf:type owl:Class
+                            ] ;
+        rdfs:subClassOf :NotWall .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_00
+:Cell_00 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_01 ;
+         :hasNorth :Wall ;
+         :hasSouth :Cell_10 ;
+         :hasWest :Wall ;
+         :X "0" ;
+         :Y "0" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_01
+:Cell_01 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_02 ;
+         :hasNorth :Wall ;
+         :hasSouth :Cell_11 ;
+         :hasWest :Cell_00 ;
+         :X "0" ;
+         :Y "1" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_02
+:Cell_02 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_03 ;
+         :hasNorth :Wall ;
+         :hasSouth :Cell_12 ;
+         :hasWest :Cell_01 ;
+         :X "0" ;
+         :Y "2" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_03
+:Cell_03 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_04 ;
+         :hasNorth :Wall ;
+         :hasSouth :Cell_13 ;
+         :hasWest :Cell_02 ;
+         :X "0" ;
+         :Y "3" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_04
+:Cell_04 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_05 ;
+         :hasNorth :Wall ;
+         :hasSouth :Cell_14 ;
+         :hasWest :Cell_03 ;
+         :X "0" ;
+         :Y "4" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_05
+:Cell_05 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_06 ;
+         :hasNorth :Wall ;
+         :hasSouth :Cell_15 ;
+         :hasWest :Cell_04 ;
+         :X "0" ;
+         :Y "5" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_06
+:Cell_06 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_07 ;
+         :hasNorth :Wall ;
+         :hasSouth :Cell_16 ;
+         :hasWest :Cell_05 ;
+         :X "0" ;
+         :Y "6" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_07
+:Cell_07 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_08 ;
+         :hasNorth :Wall ;
+         :hasSouth :Cell_17 ;
+         :hasWest :Cell_06 ;
+         :X "0" ;
+         :Y "7" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_08
+:Cell_08 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_09 ;
+         :hasNorth :Wall ;
+         :hasSouth :Cell_18 ;
+         :hasWest :Cell_07 ;
+         :X "0" ;
+         :Y "8" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_09
+:Cell_09 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Wall ;
+         :hasNorth :Wall ;
+         :hasSouth :Cell_19 ;
+         :hasWest :Cell_08 ;
+         :X "0" ;
+         :Y "9" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_10
+:Cell_10 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_11 ;
+         :hasNorth :Cell_00 ;
+         :hasSouth :Cell_20 ;
+         :hasWest :Wall ;
+         :X "1" ;
+         :Y "0" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_11
+:Cell_11 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_12 ;
+         :hasNorth :Cell_01 ;
+         :hasSouth :Cell_21 ;
+         :hasWest :Cell_10 ;
+         :X "1" ;
+         :Y "1" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_12
+:Cell_12 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_13 ;
+         :hasNorth :Cell_02 ;
+         :hasSouth :Cell_22 ;
+         :hasWest :Cell_11 ;
+         :X "1" ;
+         :Y "2" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_13
+:Cell_13 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_14 ;
+         :hasNorth :Cell_03 ;
+         :hasSouth :Cell_23 ;
+         :hasWest :Cell_12 ;
+         :X "1" ;
+         :Y "3" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_14
+:Cell_14 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_15 ;
+         :hasNorth :Cell_04 ;
+         :hasSouth :Cell_24 ;
+         :hasWest :Cell_13 ;
+         :X "1" ;
+         :Y "4" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_15
+:Cell_15 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_16 ;
+         :hasNorth :Cell_05 ;
+         :hasSouth :Cell_25 ;
+         :hasWest :Cell_14 ;
+         :X "1" ;
+         :Y "5" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_16
+:Cell_16 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_17 ;
+         :hasNorth :Cell_06 ;
+         :hasSouth :Cell_26 ;
+         :hasWest :Cell_15 ;
+         :X "1" ;
+         :Y "6" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_17
+:Cell_17 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_18 ;
+         :hasNorth :Cell_07 ;
+         :hasSouth :Cell_27 ;
+         :hasWest :Cell_16 ;
+         :X "1" ;
+         :Y "7" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_18
+:Cell_18 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_19 ;
+         :hasNorth :Cell_08 ;
+         :hasSouth :Cell_28 ;
+         :hasWest :Cell_17 ;
+         :X "1" ;
+         :Y "8" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_19
+:Cell_19 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Wall ;
+         :hasNorth :Cell_09 ;
+         :hasSouth :Cell_29 ;
+         :hasWest :Cell_18 ;
+         :X "1" ;
+         :Y "9" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_20
+:Cell_20 rdf:type owl:NamedIndividual ,
+                  :Ball1 ,
+                  :NotWall ;
+         :hasEast :Cell_21 ;
+         :hasNorth :Cell_10 ;
+         :hasSouth :Cell_30 ;
+         :hasWest :Wall ;
+         :X "2" ;
+         :Y "0" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_21
+:Cell_21 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_22 ;
+         :hasNorth :Cell_11 ;
+         :hasSouth :Cell_31 ;
+         :hasWest :Cell_20 ;
+         :X "2" ;
+         :Y "1" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_22
+:Cell_22 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_23 ;
+         :hasNorth :Cell_12 ;
+         :hasSouth :Cell_32 ;
+         :hasWest :Cell_21 ;
+         :X "2" ;
+         :Y "2" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_23
+:Cell_23 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_24 ;
+         :hasNorth :Cell_13 ;
+         :hasSouth :Cell_33 ;
+         :hasWest :Cell_22 ;
+         :X "2" ;
+         :Y "3" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_24
+:Cell_24 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_25 ;
+         :hasNorth :Cell_14 ;
+         :hasSouth :Cell_34 ;
+         :hasWest :Cell_23 ;
+         :X "2" ;
+         :Y "4" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_25
+:Cell_25 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_26 ;
+         :hasNorth :Cell_15 ;
+         :hasSouth :Cell_35 ;
+         :hasWest :Cell_24 ;
+         :X "2" ;
+         :Y "5" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_26
+:Cell_26 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_27 ;
+         :hasNorth :Cell_16 ;
+         :hasSouth :Cell_36 ;
+         :hasWest :Cell_25 ;
+         :X "2" ;
+         :Y "6" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_27
+:Cell_27 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_28 ;
+         :hasNorth :Cell_17 ;
+         :hasSouth :Cell_37 ;
+         :hasWest :Cell_26 ;
+         :X "2" ;
+         :Y "7" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_28
+:Cell_28 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_29 ;
+         :hasNorth :Cell_18 ;
+         :hasSouth :Cell_38 ;
+         :hasWest :Cell_27 ;
+         :X "2" ;
+         :Y "8" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_29
+:Cell_29 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Wall ;
+         :hasNorth :Cell_19 ;
+         :hasSouth :Cell_39 ;
+         :hasWest :Cell_28 ;
+         :X "2" ;
+         :Y "9" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_30
+:Cell_30 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_31 ;
+         :hasNorth :Cell_20 ;
+         :hasSouth :Cell_40 ;
+         :hasWest :Wall ;
+         :X "3" ;
+         :Y "0" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_31
+:Cell_31 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_32 ;
+         :hasNorth :Cell_21 ;
+         :hasSouth :Cell_41 ;
+         :hasWest :Cell_30 ;
+         :X "3" ;
+         :Y "1" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_32
+:Cell_32 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_33 ;
+         :hasNorth :Cell_22 ;
+         :hasSouth :Cell_42 ;
+         :hasWest :Cell_31 ;
+         :X "3" ;
+         :Y "2" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_33
+:Cell_33 rdf:type owl:NamedIndividual ,
+                  :Ball2 ,
+                  :NotWall ;
+         :hasEast :Cell_34 ;
+         :hasNorth :Cell_23 ;
+         :hasSouth :Cell_43 ;
+         :hasWest :Cell_32 ;
+         :X "3" ;
+         :Y "3" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_34
+:Cell_34 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_35 ;
+         :hasNorth :Cell_24 ;
+         :hasSouth :Cell_44 ;
+         :hasWest :Cell_33 ;
+         :X "3" ;
+         :Y "4" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_35
+:Cell_35 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_36 ;
+         :hasNorth :Cell_25 ;
+         :hasSouth :Cell_45 ;
+         :hasWest :Cell_34 ;
+         :X "3" ;
+         :Y "5" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_36
+:Cell_36 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_37 ;
+         :hasNorth :Cell_26 ;
+         :hasSouth :Cell_46 ;
+         :hasWest :Cell_35 ;
+         :X "3" ;
+         :Y "6" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_37
+:Cell_37 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_38 ;
+         :hasNorth :Cell_27 ;
+         :hasSouth :Cell_47 ;
+         :hasWest :Cell_36 ;
+         :X "3" ;
+         :Y "7" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_38
+:Cell_38 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_39 ;
+         :hasNorth :Cell_28 ;
+         :hasSouth :Cell_48 ;
+         :hasWest :Cell_37 ;
+         :X "3" ;
+         :Y "8" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_39
+:Cell_39 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Wall ;
+         :hasNorth :Cell_29 ;
+         :hasSouth :Cell_49 ;
+         :hasWest :Cell_38 ;
+         :X "3" ;
+         :Y "9" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_40
+:Cell_40 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_41 ;
+         :hasNorth :Cell_30 ;
+         :hasSouth :Cell_50 ;
+         :hasWest :Wall ;
+         :X "4" ;
+         :Y "0" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_41
+:Cell_41 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_42 ;
+         :hasNorth :Cell_31 ;
+         :hasSouth :Cell_51 ;
+         :hasWest :Cell_40 ;
+         :X "4" ;
+         :Y "1" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_42
+:Cell_42 rdf:type owl:NamedIndividual ,
+                  :Ball3 ,
+                  :NotWall ;
+         :hasEast :Cell_43 ;
+         :hasNorth :Cell_32 ;
+         :hasSouth :Cell_52 ;
+         :hasWest :Cell_41 ;
+         :X "4" ;
+         :Y "2" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_43
+:Cell_43 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_44 ;
+         :hasNorth :Cell_33 ;
+         :hasSouth :Cell_53 ;
+         :hasWest :Cell_42 ;
+         :X "4" ;
+         :Y "3" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_44
+:Cell_44 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_45 ;
+         :hasNorth :Cell_34 ;
+         :hasSouth :Cell_54 ;
+         :hasWest :Cell_43 ;
+         :X "4" ;
+         :Y "4" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_45
+:Cell_45 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_46 ;
+         :hasNorth :Cell_35 ;
+         :hasSouth :Cell_55 ;
+         :hasWest :Cell_44 ;
+         :X "4" ;
+         :Y "5" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_46
+:Cell_46 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_47 ;
+         :hasNorth :Cell_36 ;
+         :hasSouth :Cell_56 ;
+         :hasWest :Cell_45 ;
+         :X "4" ;
+         :Y "6" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_47
+:Cell_47 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_48 ;
+         :hasNorth :Cell_37 ;
+         :hasSouth :Cell_57 ;
+         :hasWest :Cell_46 ;
+         :X "4" ;
+         :Y "7" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_48
+:Cell_48 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_49 ;
+         :hasNorth :Cell_38 ;
+         :hasSouth :Cell_58 ;
+         :hasWest :Cell_47 ;
+         :X "4" ;
+         :Y "8" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_49
+:Cell_49 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Wall ;
+         :hasNorth :Cell_39 ;
+         :hasSouth :Cell_59 ;
+         :hasWest :Cell_48 ;
+         :X "4" ;
+         :Y "9" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_50
+:Cell_50 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_51 ;
+         :hasNorth :Cell_40 ;
+         :hasSouth :Cell_60 ;
+         :hasWest :Wall ;
+         :X "5" ;
+         :Y "0" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_51
+:Cell_51 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_52 ;
+         :hasNorth :Cell_41 ;
+         :hasSouth :Cell_61 ;
+         :hasWest :Cell_50 ;
+         :X "5" ;
+         :Y "1" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_52
+:Cell_52 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_53 ;
+         :hasNorth :Cell_42 ;
+         :hasSouth :Cell_62 ;
+         :hasWest :Cell_51 ;
+         :X "5" ;
+         :Y "2" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_53
+:Cell_53 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_54 ;
+         :hasNorth :Cell_43 ;
+         :hasSouth :Cell_63 ;
+         :hasWest :Cell_52 ;
+         :X "5" ;
+         :Y "3" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_54
+:Cell_54 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_55 ;
+         :hasNorth :Cell_44 ;
+         :hasSouth :Cell_64 ;
+         :hasWest :Cell_53 ;
+         :X "5" ;
+         :Y "4" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_55
+:Cell_55 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_56 ;
+         :hasNorth :Cell_45 ;
+         :hasSouth :Cell_65 ;
+         :hasWest :Cell_54 ;
+         :X "5" ;
+         :Y "5" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_56
+:Cell_56 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_57 ;
+         :hasNorth :Cell_46 ;
+         :hasSouth :Cell_66 ;
+         :hasWest :Cell_55 ;
+         :X "5" ;
+         :Y "6" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_57
+:Cell_57 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_58 ;
+         :hasNorth :Cell_47 ;
+         :hasSouth :Cell_67 ;
+         :hasWest :Cell_56 ;
+         :X "5" ;
+         :Y "7" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_58
+:Cell_58 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_59 ;
+         :hasNorth :Cell_48 ;
+         :hasSouth :Cell_68 ;
+         :hasWest :Cell_57 ;
+         :X "5" ;
+         :Y "8" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_59
+:Cell_59 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Wall ;
+         :hasNorth :Cell_49 ;
+         :hasSouth :Cell_69 ;
+         :hasWest :Cell_58 ;
+         :X "5" ;
+         :Y "9" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_60
+:Cell_60 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_61 ;
+         :hasNorth :Cell_50 ;
+         :hasSouth :Cell_70 ;
+         :hasWest :Wall ;
+         :X "6" ;
+         :Y "0" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_61
+:Cell_61 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_62 ;
+         :hasNorth :Cell_51 ;
+         :hasSouth :Cell_71 ;
+         :hasWest :Cell_60 ;
+         :X "6" ;
+         :Y "1" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_62
+:Cell_62 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_63 ;
+         :hasNorth :Cell_52 ;
+         :hasSouth :Cell_72 ;
+         :hasWest :Cell_61 ;
+         :X "6" ;
+         :Y "2" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_63
+:Cell_63 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_64 ;
+         :hasNorth :Cell_53 ;
+         :hasSouth :Cell_73 ;
+         :hasWest :Cell_62 ;
+         :X "6" ;
+         :Y "3" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_64
+:Cell_64 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_65 ;
+         :hasNorth :Cell_54 ;
+         :hasSouth :Cell_74 ;
+         :hasWest :Cell_63 ;
+         :X "6" ;
+         :Y "4" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_65
+:Cell_65 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_66 ;
+         :hasNorth :Cell_55 ;
+         :hasSouth :Cell_75 ;
+         :hasWest :Cell_64 ;
+         :X "6" ;
+         :Y "5" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_66
+:Cell_66 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_67 ;
+         :hasNorth :Cell_56 ;
+         :hasSouth :Cell_76 ;
+         :hasWest :Cell_65 ;
+         :X "6" ;
+         :Y "6" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_67
+:Cell_67 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_68 ;
+         :hasNorth :Cell_57 ;
+         :hasSouth :Cell_77 ;
+         :hasWest :Cell_66 ;
+         :X "6" ;
+         :Y "7" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_68
+:Cell_68 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_69 ;
+         :hasNorth :Cell_58 ;
+         :hasSouth :Cell_78 ;
+         :hasWest :Cell_67 ;
+         :X "6" ;
+         :Y "8" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_69
+:Cell_69 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Wall ;
+         :hasNorth :Cell_59 ;
+         :hasSouth :Cell_79 ;
+         :hasWest :Cell_68 ;
+         :X "6" ;
+         :Y "9" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_70
+:Cell_70 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_71 ;
+         :hasNorth :Cell_60 ;
+         :hasSouth :Cell_80 ;
+         :hasWest :Wall ;
+         :X "7" ;
+         :Y "0" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_71
+:Cell_71 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_72 ;
+         :hasNorth :Cell_61 ;
+         :hasSouth :Cell_81 ;
+         :hasWest :Cell_70 ;
+         :X "7" ;
+         :Y "1" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_72
+:Cell_72 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_73 ;
+         :hasNorth :Cell_62 ;
+         :hasSouth :Cell_82 ;
+         :hasWest :Cell_71 ;
+         :X "7" ;
+         :Y "2" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_73
+:Cell_73 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_74 ;
+         :hasNorth :Cell_63 ;
+         :hasSouth :Cell_83 ;
+         :hasWest :Cell_72 ;
+         :X "7" ;
+         :Y "3" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_74
+:Cell_74 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_75 ;
+         :hasNorth :Cell_64 ;
+         :hasSouth :Cell_84 ;
+         :hasWest :Cell_73 ;
+         :X "7" ;
+         :Y "4" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_75
+:Cell_75 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_76 ;
+         :hasNorth :Cell_65 ;
+         :hasSouth :Cell_85 ;
+         :hasWest :Cell_74 ;
+         :X "7" ;
+         :Y "5" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_76
+:Cell_76 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_77 ;
+         :hasNorth :Cell_66 ;
+         :hasSouth :Cell_86 ;
+         :hasWest :Cell_75 ;
+         :X "7" ;
+         :Y "6" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_77
+:Cell_77 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_78 ;
+         :hasNorth :Cell_67 ;
+         :hasSouth :Cell_87 ;
+         :hasWest :Cell_76 ;
+         :X "7" ;
+         :Y "7" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_78
+:Cell_78 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_79 ;
+         :hasNorth :Cell_68 ;
+         :hasSouth :Cell_88 ;
+         :hasWest :Cell_77 ;
+         :X "7" ;
+         :Y "8" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_79
+:Cell_79 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Wall ;
+         :hasNorth :Cell_69 ;
+         :hasSouth :Cell_89 ;
+         :hasWest :Cell_78 ;
+         :X "7" ;
+         :Y "9" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_80
+:Cell_80 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_81 ;
+         :hasNorth :Cell_70 ;
+         :hasSouth :Cell_90 ;
+         :hasWest :Wall ;
+         :X "8" ;
+         :Y "0" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_81
+:Cell_81 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_82 ;
+         :hasNorth :Cell_71 ;
+         :hasSouth :Cell_91 ;
+         :hasWest :Cell_80 ;
+         :X "8" ;
+         :Y "1" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_82
+:Cell_82 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_83 ;
+         :hasNorth :Cell_72 ;
+         :hasSouth :Cell_92 ;
+         :hasWest :Cell_81 ;
+         :X "8" ;
+         :Y "2" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_83
+:Cell_83 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_84 ;
+         :hasNorth :Cell_73 ;
+         :hasSouth :Cell_93 ;
+         :hasWest :Cell_82 ;
+         :X "8" ;
+         :Y "3" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_84
+:Cell_84 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_85 ;
+         :hasNorth :Cell_74 ;
+         :hasSouth :Cell_94 ;
+         :hasWest :Cell_83 ;
+         :X "8" ;
+         :Y "4" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_85
+:Cell_85 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_86 ;
+         :hasNorth :Cell_75 ;
+         :hasSouth :Cell_95 ;
+         :hasWest :Cell_84 ;
+         :X "8" ;
+         :Y "5" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_86
+:Cell_86 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_87 ;
+         :hasNorth :Cell_76 ;
+         :hasSouth :Cell_96 ;
+         :hasWest :Cell_85 ;
+         :X "8" ;
+         :Y "6" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_87
+:Cell_87 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_88 ;
+         :hasNorth :Cell_77 ;
+         :hasSouth :Cell_97 ;
+         :hasWest :Cell_86 ;
+         :X "8" ;
+         :Y "7" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_88
+:Cell_88 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_89 ;
+         :hasNorth :Cell_78 ;
+         :hasSouth :Cell_98 ;
+         :hasWest :Cell_87 ;
+         :X "8" ;
+         :Y "8" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_89
+:Cell_89 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Wall ;
+         :hasNorth :Cell_79 ;
+         :hasSouth :Cell_99 ;
+         :hasWest :Cell_88 ;
+         :X "8" ;
+         :Y "9" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_90
+:Cell_90 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_91 ;
+         :hasNorth :Cell_80 ;
+         :hasSouth :Wall ;
+         :hasWest :Wall ;
+         :X "9" ;
+         :Y "0" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_91
+:Cell_91 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_92 ;
+         :hasNorth :Cell_81 ;
+         :hasSouth :Wall ;
+         :hasWest :Cell_90 ;
+         :X "9" ;
+         :Y "1" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_92
+:Cell_92 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_93 ;
+         :hasNorth :Cell_82 ;
+         :hasSouth :Wall ;
+         :hasWest :Cell_91 ;
+         :X "9" ;
+         :Y "2" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_93
+:Cell_93 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_94 ;
+         :hasNorth :Cell_83 ;
+         :hasSouth :Wall ;
+         :hasWest :Cell_92 ;
+         :X "9" ;
+         :Y "3" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_94
+:Cell_94 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_95 ;
+         :hasNorth :Cell_84 ;
+         :hasSouth :Wall ;
+         :hasWest :Cell_93 ;
+         :X "9" ;
+         :Y "4" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_95
+:Cell_95 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_96 ;
+         :hasNorth :Cell_85 ;
+         :hasSouth :Wall ;
+         :hasWest :Cell_94 ;
+         :X "9" ;
+         :Y "5" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_96
+:Cell_96 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_97 ;
+         :hasNorth :Cell_86 ;
+         :hasSouth :Wall ;
+         :hasWest :Cell_95 ;
+         :X "9" ;
+         :Y "6" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_97
+:Cell_97 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_98 ;
+         :hasNorth :Cell_87 ;
+         :hasSouth :Wall ;
+         :hasWest :Cell_96 ;
+         :X "9" ;
+         :Y "7" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_98
+:Cell_98 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Cell_99 ;
+         :hasNorth :Cell_88 ;
+         :hasSouth :Wall ;
+         :hasWest :Cell_97 ;
+         :X "9" ;
+         :Y "8" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_99
+:Cell_99 rdf:type owl:NamedIndividual ,
+                  :NotWall ;
+         :hasEast :Wall ;
+         :hasNorth :Cell_89 ;
+         :hasSouth :Wall ;
+         :hasWest :Cell_98 ;
+         :X "9" ;
+         :Y "9" .
+
+
+###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Wall
+:Wall rdf:type owl:NamedIndividual ,
+               :Wall .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
