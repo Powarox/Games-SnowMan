@@ -48,24 +48,40 @@
             },
 
             stardog(){
-              const { Connection, query } = require('stardog');
+                const { Connection, query } = require('stardog');
 
-              const conn = new Connection({
-                  username: 'admin',
-                  password: 'admin',
-                  endpoint: 'http://localhost:5820',
-              });
+                const conn = new Connection({
+                    username: 'admin',
+                    password: 'admin',
+                    endpoint: 'http://localhost:5820',
+                });
 
-              let request = 'SELECT ?Cell WHERE {?Cell rdf:type grid:PlayerCell.}';
+                let request = 'SELECT ?Cell WHERE {?Cell rdf:type grid:PlayerCell.}';
 
-              query.execute(conn, 'stardog', request, 'application/sparql-results+json', {
-                  limit: 10,
-                  offset: 0,
-                  reasoning: true
-              }).then(({ body }) => {
-                  // console.log(body.results.bindings);
-                  console.log(body.results.bindings[0].Cell.value);
-              });
+                """
+                SELECT ?rname ?lname
+                WHERE {
+                    ?Player a :PlayerCell .
+                    ?Player :X ?X .
+                    ?Player :Y ?Y .
+                }
+
+                SELECT ?Player ?X ?Y
+                WHERE {
+                   ?Player a :PlayerCell .
+                   ?Player ?Y ?X .
+                }
+
+                """
+
+                query.execute(conn, 'stardog', request, 'application/sparql-results+json', {
+                    limit: 10,
+                    offset: 0,
+                    reasoning: true
+                }).then(({ body }) => {
+                    // console.log(body.results.bindings);
+                    console.log(body.results.bindings[0].Cell.value);
+                });
             }
         },
         computed: {
