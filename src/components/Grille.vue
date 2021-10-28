@@ -56,31 +56,37 @@
                     endpoint: 'http://localhost:5820',
                 });
 
-                let request = 'SELECT ?Cell WHERE {?Cell rdf:type grid:PlayerCell.}';
+                let request = 'SELECT ?Player ?X ?Y WHERE{ ?Player a grid:PlayerCell . ?Player grid:X ?X . ?Player grid:Y ?Y .}';
 
-                """
-                SELECT ?rname ?lname
-                WHERE {
-                    ?Player a :PlayerCell .
-                    ?Player :X ?X .
-                    ?Player :Y ?Y .
-                }
+                /*"""
+                SELECT ?Cell WHERE {?Cell rdf:type grid:PlayerCell.}
 
+                // Return le joueur et sa pos X et Y
                 SELECT ?Player ?X ?Y
                 WHERE {
-                   ?Player a :PlayerCell .
-                   ?Player ?Y ?X .
+                    ?Player a grid:PlayerCell .
+                    ?Player grid:X ?X .
+                    ?Player grid:Y ?Y .
                 }
 
-                """
+                // Return toutes les Cell avec leurs pos X et Y
+                SELECT ?Cell ?X ?Y
+                WHERE {
+                    ?Cell a grid:Cell .
+                    ?Cell grid:X ?X .
+                    ?Cell grid:Y ?Y .
+                }
 
-                query.execute(conn, 'stardog', request, 'application/sparql-results+json', {
+                """*/
+
+                query.execute(conn, 'ontologie_db', request, 'application/sparql-results+json', {
                     limit: 10,
                     offset: 0,
                     reasoning: true
                 }).then(({ body }) => {
-                    // console.log(body.results.bindings);
-                    console.log(body.results.bindings[0].Cell.value);
+                    console.log(body.results.bindings);
+                    console.log(body.results.bindings[0].X.value);
+                    console.log(body.results.bindings[0].Y.value);
                 });
             }
         },

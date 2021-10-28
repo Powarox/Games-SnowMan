@@ -166,6 +166,7 @@
 
 ###  http://www.semanticweb.org/firer/ontologies/2021/9/untitled-ontology-2#Cell_02
 :Cell_02 rdf:type owl:NamedIndividual ,
+                  :PlayerCell ,
                   :NotWall ;
          :hasEast :Cell_03 ;
          :hasNorth :Wall ;
