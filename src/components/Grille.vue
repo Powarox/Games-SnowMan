@@ -50,8 +50,9 @@
 </template>
 
 <script>
-    const { Connection, query } = require('stardog');
+    import { mapGetters, mapActions } from 'vuex';
 
+    const { Connection, query } = require('stardog');
     const conn = new Connection({
         username: 'admin',
         password: 'admin',
@@ -61,6 +62,23 @@
     export default {
         name: "Grille",
         methods: {
+            ...mapActions([
+                'addTask', 'delTask', 'checkTask'
+            ]),
+
+            // add_todo(){
+            //     this.addTask(this.message);
+            //     this.message = "";
+            // },
+            //
+            // del_todo(delkey){
+            //     this.delTask(delkey);
+            // },
+            //
+            // check_todo(key){
+            //     this.checkTask(key);
+            // },
+
             moove_player(side) {
                 console.log(side);
             },
@@ -119,6 +137,19 @@
             }
         },
         computed: {
+            ...mapGetters([
+                'getallTodos'
+            ]),
+
+            // filterTodos(){
+            //     if(this.filter === "todo"){
+            //         return this.getallTodos.filter((todo) => !todo.completed);
+            //     } else if(this.filter === "done"){
+            //         return this.getallTodos.filter((todo) => todo.completed);
+            //     }
+            //     return this.getallTodos;
+            // }
+
             remplir_grid() {
                 let rows_div = document.querySelector('.rows');
                 let all_elem = rows_div.querySelectorAll('.elem');
