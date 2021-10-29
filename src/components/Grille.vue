@@ -144,8 +144,12 @@
         grid-template-columns: repeat(10, 1fr);
     }
 
+    .rows {
+      margin: 5px;
+    }
+
     .elem {
-        width: 60px;
+        width: 100%;
         height: 60px;
         background: #6BB34D;
         border-radius: 5px;
