@@ -119,15 +119,20 @@
             }
         },
         computed: {
-            // remplir_grid() {
-            //     let grid_div = document.querySelector('.rows');
-            //     let all_elem = grid_div.querySelectorAll('.elem');
-            //
-            //     for(let i = 0; i < all_elem.length; i++){
-            //         all_elem[i].classList.add(this.grid[i].state);
-            //     }
-            //     return this.grid;
-            // }
+            remplir_grid() {
+                let rows_div = document.querySelector('.rows');
+                let all_elem = rows_div.querySelectorAll('.elem');
+
+                for(let i = 0; i < rows_div.length; i++){
+                    for(let j = 0; j < all_elem.length; j++){
+                        this.teste2(all_elem);
+                        this.teste2(rows_div);
+                        // all_elem[i].classList.add(this.grid[i].state);
+                    }
+                }
+
+                return this.grid;
+            }
         },
         data() {
             return {
