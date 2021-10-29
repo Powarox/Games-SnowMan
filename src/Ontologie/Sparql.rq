@@ -1,0 +1,55 @@
+SELECT ?Cell WHERE {?Cell rdf:type grid:PlayerCell.}
+
+// Return le joueur et sa pos X et Y
+SELECT ?Player ?X ?Y
+WHERE {
+    ?Player a grid:PlayerCell .
+    ?Player grid:X ?X .
+    ?Player grid:Y ?Y .
+}
+
+// Return toutes les Cell avec leurs pos X et Y
+SELECT ?Cell ?X ?Y
+WHERE {
+    ?Cell a grid:Cell .
+    ?Cell grid:X ?X .
+    ?Cell grid:Y ?Y .
+}
+
+
+
+
+build_grid(){
+  let request = `
+      SELECT ?Player ?X ?Y
+      WHERE{
+          ?Player a grid:PlayerCell .
+          ?Player grid:X ?X .
+          ?Player grid:Y ?Y .
+      }
+  `;
+  let player = this.stardog(request);
+
+  console.log("coucou : " ,player);
+},
+
+stardog(request){
+    const { Connection, query } = require('stardog');
+
+    const conn = new Connection({
+        username: 'admin',
+        password: 'admin',
+        endpoint: 'http://localhost:5820',
+    });
+
+    query.execute(conn, 'ontologie_db', request, 'application/sparql-results+json', {
+        limit: 10,
+        offset: 0,
+        reasoning: true
+    }).then(({ body }) => {
+        // console.log(body.results.bindings);
+        // console.log(body.results.bindings[0].X.value);
+        // console.log(body.results.bindings[0].Y.value);
+        return body.results.bindings;
+    });
+}
