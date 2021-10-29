@@ -2,8 +2,8 @@
     <h1>SnowMan Game</h1>
 
     <section class="grid">
-        <div class="rows" v-for="elem in create_grid()" v-bind:key="elem.id">
-            <div class="elem" v-for="e in elem" v-bind:key="e.id">
+        <div class="rows" v-for="elem in this.getGrid" v-bind:key="elem" >
+            <div class="elem" :class="{ completed: grid.state }" v-for="e in elem" v-bind:key="e.id">
 
             </div>
         </div>
@@ -41,7 +41,7 @@
 
     <button @click="test_moove()">test</button>
 
-    <button @click="create_grid()">Create Grid</button>
+    <!-- <button @click="create_grid()">Create Grid</button> -->
 
     <button @click="build_grid()">Build Grid</button>
 
@@ -61,23 +61,13 @@
 
     export default {
         name: "Grille",
+        beforeMount(){
+            this.createGrid();
+        },
         methods: {
             ...mapActions([
-                'addTask', 'delTask', 'checkTask'
+                'createGrid', 'updateGrid'
             ]),
-
-            // add_todo(){
-            //     this.addTask(this.message);
-            //     this.message = "";
-            // },
-            //
-            // del_todo(delkey){
-            //     this.delTask(delkey);
-            // },
-            //
-            // check_todo(key){
-            //     this.checkTask(key);
-            // },
 
             moove_player(side) {
                 console.log(side);
@@ -87,29 +77,12 @@
                 console.log(this.grid);
             },
 
-            create_grid(){
-                let grid = [];
-                let rows = 10;
-
-                for(let i = 0; i < rows; i++){
-                    grid.push([]);
-                    grid[i].push([rows])
-                    for(let j = 0; j < rows; j++){
-                        grid[i][j] = {
-                            'Cell' : 'cell_' + i + j,
-                            'Elem' : 'none'
-                        };
-                    }
-                }
-                this.grid = grid;
-                return grid;
-            },
-
             build_grid(){
               this.stardog_query('PlayerCell');
               this.stardog_query('Ball1');
               this.stardog_query('Ball2');
               this.stardog_query('Ball3');
+              this.forceRerender();
             },
 
             stardog_query(find){
@@ -127,18 +100,26 @@
                   offset: 0,
                   reasoning: true
               }).then(({ body }) => {
-                  this.teste(find, body.results.bindings[0].X.value, body.results.bindings[0].Y.value);
+                  this.updateGrid([find, body.results.bindings[0].X.value, body.results.bindings[0].Y.value]);
               });
             },
 
-            teste(find, x, y){
-              this.grid[x][y].Elem = find;
-              console.log(this.grid[x][y]);
+            forceRerender(){
+                let all_rows = document.querySelectorAll('.rows');
+
+                for(let i = 0; i < this.getGrid.length; i++){
+                    let all_elem = all_rows[i].querySelectorAll('.elem');
+                    for(let j = 0; j < this.getGrid.length; j++){
+                        all_elem[j].classList.add(this.getGrid[i][j].State)
+                    }
+                }
+
+                this.elem += 1;
             }
         },
         computed: {
             ...mapGetters([
-                'getallTodos'
+                'getGrid'
             ]),
 
             // filterTodos(){
@@ -150,24 +131,22 @@
             //     return this.getallTodos;
             // }
 
-            remplir_grid() {
-                let rows_div = document.querySelector('.rows');
-                let all_elem = rows_div.querySelectorAll('.elem');
-
-                for(let i = 0; i < rows_div.length; i++){
-                    for(let j = 0; j < all_elem.length; j++){
-                        this.teste2(all_elem);
-                        this.teste2(rows_div);
-                        // all_elem[i].classList.add(this.grid[i].state);
-                    }
-                }
-
-                return this.grid;
-            }
+            // remplir_grid() {
+            //     let rows_div = document.querySelector('.rows');
+            //     let all_elem = rows_div.querySelectorAll('.elem');
+            //
+            //     for(let i = 0; i < rows_div.length; i++){
+            //         for(let j = 0; j < all_elem.length; j++){
+            //             all_elem[i].classList.add(this.grid[i].state);
+            //         }
+            //     }
+            //
+            //     return this.grid;
+            // }
         },
         data() {
             return {
-                test: "ici",
+                elem: 0,
                 grid: []
             }
         }
@@ -235,19 +214,19 @@
         justify-content: center;
     } */
 
-    .top {
+    .Ball1 {
         background-image: url('../assets/top.png');
     }
 
-    .center {
+    .Ball2 {
         background-image: url('../assets/center.png');
     }
 
-    .bottom {
+    .Ball3 {
         background-image: url('../assets/bottom.png');
     }
 
-    .player {
+    .PlayerCell {
         background-image: url('../assets/player.png');
     }
 

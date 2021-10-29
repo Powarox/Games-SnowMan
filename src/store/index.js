@@ -4,56 +4,45 @@ export const store = createStore({
     state() {
         return {
             filter: "all",
-            todos :[
-                { id: 1, name: "tache 1", completed: false},
-                { id: 2, name: "tache 2", completed: false},
-                { id: 3, name: "tache 3", completed: true}
-            ]
+            grid :[]
         }
     },
 
     getters: {
-        getallTodos(state) {
-            return state.todos
+        getGrid(state) {
+            return state.grid
         },
     },
 
     actions: {
-        addTask({commit}, message) {
-            commit('ADDTASK', message);
+        createGrid({commit}) {
+            commit('CREATEGRID');
         },
 
-        delTask({commit}, task) {
-            commit('DELTASK', task);
+        updateGrid({commit}, list) {
+            commit('UPDATEGRID', list);
         },
-
-        checkTask({commit}, task) {
-            commit('CHECKTASK', task);
-        }
     },
 
     mutations: {
-        ADDTASK(state, val) {
-            if(val !== undefined && val.replace(/\s+/g, '') !== ""){
-                state.todos.push({
-                    id: state.todos.lenght,
-                    name: val,
-                    completed: false
-                })
+        CREATEGRID(state) {
+            let rows = 10;
+
+            for(let i = 0; i < rows; i++){
+                state.grid.push([]);
+                state.grid[i].push([rows])
+                for(let j = 0; j < rows; j++){
+                    state.grid[i][j] = {
+                        'Cell' : 'cell_' + i + j,
+                        'State' : 'none'
+                    };
+                }
             }
         },
 
-        DELTASK(state, key) {
-            state.todos.splice(key, 1);
-        },
-
-        CHECKTASK(state, key) {
-            console.log(key);
-            // if(state.todos[key].completed){
-            //     state.todos[key].completed = false;
-            // } else {
-            //     state.todos[key].completed = true;
-            // }
+        UPDATEGRID(state, list){
+            console.log(list);
+            state.grid[list[1]][list[2]].State = list[0];
         }
     }
 });
