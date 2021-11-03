@@ -16,6 +16,34 @@ WHERE {
     ?Cell grid:Y ?Y .
 }
 
+// Suppression puis insertion de propriété
+DELETE {
+    ?c rdf:type :CellPlayer
+}
+INSERT {
+    :notCellPlayer rdf:type :CellPlayer
+}
+WHERE{
+    ?c rdf:type :CellPlayer
+}
+
+
+pour enregistrer les règles dans le fichier .ttl de l’ontologie, utiliser la syntaxe suivante :
+
+[ rdf:type rule:SPARQLRule ;
+  rule:content """
+IF {
+    ?r a :Rectangle ;
+       :width ?w ;
+       :height ?h
+    BIND (?w * ?h AS ?area)
+}
+THEN {
+    ?r :area ?area
+}
+"""
+] .
+
 
 
 
