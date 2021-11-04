@@ -47,6 +47,8 @@
 
     <button @click="build_grid()">Start Game</button>
 
+    <!-- <button @click="updateCss()">Update Game</button> -->
+
 </template>
 
 <script>
@@ -96,9 +98,9 @@
                     reasoning: true
                 }).then(({ body }) => {
                     if(body.results.bindings[0]) {
-                        console.log(body.results.bindings[0]);
-                        console.log(body.results.bindings[0].X.value);
-                        console.log(body.results.bindings[0].Y.value);
+                        // console.log(body.results.bindings[0]);
+                        // console.log(body.results.bindings[0].X.value);
+                        // console.log(body.results.bindings[0].Y.value);
                         this.updateGrid(["PlayerCell", body.results.bindings[0].X.value, body.results.bindings[0].Y.value]);
                         this.forceRerender();
                     }
@@ -132,16 +134,27 @@
                     reasoning: true
                 }).then(({ body }) => {
                     this.updateGrid([find, body.results.bindings[0].X.value, body.results.bindings[0].Y.value]);
+                    // this.updateCss(body.results.bindings[0].X.value, body.results.bindings[0].Y.value);
                 });
             },
+
+            // updateCss(x, y){
+            //     let grid_container = document.querySelector('.grid');
+            //     let rows_container = grid_container.childNodes[parseInt(x, 10)+1];
+            //
+            //     rows_container.childNodes[parseInt(y, 10)+1].classList.add(this.getGrid[x][y].State);
+            //
+            // },
 
             forceRerender() {
                 let all_rows = document.querySelectorAll('.rows');
 
+                console.log(all_rows[0].childNodes);
+
                 for(let i = 0; i < this.getGrid.length; i++){
                     let all_elem = all_rows[i].querySelectorAll('.elem');
                     for(let j = 0; j < this.getGrid.length; j++){
-                        all_elem[j].classList.add(this.getGrid[i][j].State)
+                        all_elem[j].classList.add(this.getGrid[i][j].State);
                     }
                 }
 
