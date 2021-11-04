@@ -3,15 +3,26 @@ import { createStore } from "vuex"
 export const store = createStore({
     state() {
         return {
-            filter: "all",
-            grid :[]
+            grid :[],
+            PlayerCell: [],
+            Ball1: [],
+            Ball2: [],
+            Ball3: []
         }
     },
 
     getters: {
         getGrid(state) {
-            return state.grid
+            return state.grid;
         },
+
+        getPlayer(state) {
+            return state.PlayerCell;
+        },
+
+        getBall(state) {
+            return [state.Ball1, state.Ball2, state.Ball3];
+        }
     },
 
     actions: {
@@ -22,6 +33,10 @@ export const store = createStore({
         updateGrid({commit}, list) {
             commit('UPDATEGRID', list);
         },
+
+        delPlayer({commit}){
+            commit('DELPLAYER');
+        }
     },
 
     mutations: {
@@ -40,9 +55,42 @@ export const store = createStore({
             }
         },
 
-        UPDATEGRID(state, list){
-            console.log(list);
-            state.grid[list[1]][list[2]].State = list[0];
-        }
+        UPDATEGRID(state, list) {
+            // console.log(list);
+            state.grid[list[2]][list[1]].State = list[0];
+
+            switch (list[0]) {
+                case 'PlayerCell': state.PlayerCell = {
+                    'X' : list[1],
+                    'Y' : list[2]
+                }
+                    break;
+                case 'Ball1': state.Ball1 = {
+                    'X' : list[1],
+                    'Y' : list[2]
+                }
+                    break;
+                case 'Ball2': state.Ball2 = {
+                    'X' : list[1],
+                    'Y' : list[2]
+                }
+                    break;
+                case 'Ball3': state.Ball3 = {
+                    'X' : list[1],
+                    'Y' : list[2]
+                }
+                    break;
+                default:
+
+            }
+
+            // if(list[0] === 'PlayerCell'){
+            //
+            // }
+        },
+
+        // DELPLAYER(state) {
+        //
+        // }
     }
 });

@@ -11,27 +11,27 @@
 
     <div class="moove">
         <div id="top_btn">
-            <button v-on:click="moove_player('up')">
+            <button v-on:click="moove_player('isNorth')">
                 <i class="fas fa-arrow-up"></i>  Haut  <i class="fas fa-arrow-up"></i>
             </button>
         </div>
 
         <div id="center_btn">
-            <button v-on:click="moove_player('left')">
+            <button v-on:click="moove_player('isWest')">
                 <i class="fas fa-arrow-left"></i>  Gauche  <i class="fas fa-arrow-left"></i>
             </button>
 
-            <button @keyup.left="moove_player('left')" @keyup.up="moove_player('up')"
-                @keyup.down="moove_player('down')" @keyup.right="moove_player('right')">Clavier
+            <button @keyup.up="moove_player('isNorth')" @keyup.left="moove_player('isWest')"
+                @keyup.right="moove_player('isEast')" @keyup.down="moove_player('isSouth')">Clavier
             </button>
 
-            <button v-on:click="moove_player('right')">
+            <button v-on:click="moove_player('isEast')">
                 <i class="fas fa-arrow-right"></i>  Droite  <i class="fas fa-arrow-right"></i>
             </button>
         </div>
 
         <div id="down_btn">
-            <button v-on:click="moove_player('down')">
+            <button v-on:click="moove_player('isSouth')">
                 <i class="fas fa-arrow-down"></i>  Bas  <i class="fas fa-arrow-down"></i>
             </button>
         </div>
@@ -69,42 +69,73 @@
                 'createGrid', 'updateGrid'
             ]),
 
-            moove_player(side) {
-                console.log(side);
-            },
-
             test_moove() {
                 console.log(this.grid);
+                let test = "grid:Cell_12";
+                console.log(test.split('_'));
             },
 
-            build_grid(){
-              this.stardog_query('PlayerCell');
-              this.stardog_query('Ball1');
-              this.stardog_query('Ball2');
-              this.stardog_query('Ball3');
-              this.forceRerender();
+            moove_player(side) {
+                console.log(side);
+                this.stardog_moove_query(side);
             },
 
-            stardog_query(find){
-              let query_search = `
-                  SELECT ?Find ?X ?Y
-                  WHERE{
-                      ?Find a grid:`+find+` .
-                      ?Find grid:X ?X .
-                      ?Find grid:Y ?Y .
-                  }
-              `;
+            stardog_moove_query(side) {
+                let query_search = `
+                    SELECT ?Cell ?X ?Y
+                    WHERE {
+                        ?Cell a grid:`+side+` .
+                        ?Cell grid:X ?X .
+                        ?Cell grid:Y ?Y .
+                    }
+                `;
 
-              query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
-                  limit: 10,
-                  offset: 0,
-                  reasoning: true
-              }).then(({ body }) => {
-                  this.updateGrid([find, body.results.bindings[0].X.value, body.results.bindings[0].Y.value]);
-              });
+                query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
+                    limit: 10,
+                    offset: 0,
+                    reasoning: true
+                }).then(({ body }) => {
+                    if(body.results.bindings[0]) {
+                        console.log(body.results.bindings[0]);
+                        console.log(body.results.bindings[0].X.value);
+                        console.log(body.results.bindings[0].Y.value);
+                        this.updateGrid(["PlayerCell", body.results.bindings[0].X.value, body.results.bindings[0].Y.value]);
+                        this.forceRerender();
+                    }
+                    else {
+                        console.log("Action Impossible");
+                    }
+                });
             },
 
-            forceRerender(){
+            build_grid() {
+                this.stardog_build_query('PlayerCell');
+                this.stardog_build_query('Ball1');
+                this.stardog_build_query('Ball2');
+                this.stardog_build_query('Ball3');
+                this.forceRerender();
+            },
+
+            stardog_build_query(find) {
+                let query_search = `
+                    SELECT ?Find ?X ?Y
+                    WHERE{
+                        ?Find a grid:`+find+` .
+                        ?Find grid:X ?X .
+                        ?Find grid:Y ?Y .
+                    }
+                `;
+
+                query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
+                    limit: 10,
+                    offset: 0,
+                    reasoning: true
+                }).then(({ body }) => {
+                    this.updateGrid([find, body.results.bindings[0].X.value, body.results.bindings[0].Y.value]);
+                });
+            },
+
+            forceRerender() {
                 let all_rows = document.querySelectorAll('.rows');
 
                 for(let i = 0; i < this.getGrid.length; i++){
@@ -119,7 +150,7 @@
         },
         computed: {
             ...mapGetters([
-                'getGrid'
+                'getGrid', 'getPlayer', 'getBall'
             ]),
 
             // filterTodos(){
@@ -146,7 +177,7 @@
         },
         data() {
             return {
-                elem: 0,
+                elem: 1,
                 grid: []
             }
         }
