@@ -21,10 +21,11 @@ DELETE {
     ?c rdf:type :CellPlayer
 }
 INSERT {
-    :notCellPlayer rdf:type :CellPlayer
+    ?dir rdf:type :CellPlayer
 }
-WHERE{
-    ?c rdf:type :CellPlayer
+WHERE {
+    ?c rdf:type :CellPlayer .
+    ?dir rdf:type :isEast
 }
 
 

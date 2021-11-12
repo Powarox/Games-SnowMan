@@ -4,7 +4,7 @@ export const store = createStore({
     state() {
         return {
             grid :[],
-            PlayerCell: [],
+            PlayerCell: 'none',
             Ball1: [],
             Ball2: [],
             Ball3: []
@@ -20,8 +20,16 @@ export const store = createStore({
             return state.PlayerCell;
         },
 
-        getBall(state) {
-            return [state.Ball1, state.Ball2, state.Ball3];
+        getBall1(state) {
+            return state.Ball1;
+        },
+
+        getBall2(state) {
+            return state.Ball2;
+        },
+
+        getBall3(state) {
+            return state.Ball3;
         }
     },
 
@@ -56,7 +64,8 @@ export const store = createStore({
         },
 
         UPDATEGRID(state, list) {
-            // console.log(list);
+            // console.log(list[0]);
+
             state.grid[list[2]][list[1]].State = list[0];
 
             switch (list[0]) {
@@ -83,14 +92,10 @@ export const store = createStore({
                 default:
 
             }
-
-            // if(list[0] === 'PlayerCell'){
-            //
-            // }
         },
 
-        // DELPLAYER(state) {
-        //
-        // }
+        DELPLAYER(state) {
+            state.grid[state.PlayerCell.Y][state.PlayerCell.X].State = 'none';
+        }
     }
 });
