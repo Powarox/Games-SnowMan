@@ -93,13 +93,53 @@
                     reasoning: true
                 }).then(({ body }) => {
                     if(body.results.bindings[0]) {
+                        let cell_player = body.results.bindings[0].Cell.value.split('#')[1];
+                        // console.log('Player : ', cell_player);
+
+                        this.test_if_ball_here(body.results.bindings[0].X.value, body.results.bindings[0].Y.value, side, cell_player);
+
+                        // this.delPlayer();
+                        // this.updateGrid(["PlayerCell", body.results.bindings[0].X.value, body.results.bindings[0].Y.value]);
+                        // this.update_player(side);
+                        // this.forceRerender();
+                    }
+                    else {
+                        console.log('Action Impossible Wall' );
+                    }
+                });
+            },
+
+            test_if_ball_here(player_X, player_Y, side, cell_player){
+                let query_search = `
+                    SELECT ?Ball1 ?Ball2 ?Ball3
+                    WHERE {
+                        ?Ball1 a grid:Ball1 .
+                        ?Ball2 a grid:Ball2 .
+                        ?Ball3 a grid:Ball3 .
+                    }
+                `;
+
+                query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
+                    limit: 10,
+                    offset: 0,
+                    reasoning: true
+                }).then(({ body }) => {
+                    let cell_ball1 = body.results.bindings[0].Ball1.value.split('#')[1]
+                    let cell_ball2 = body.results.bindings[0].Ball2.value.split('#')[1]
+                    let cell_ball3 = body.results.bindings[0].Ball3.value.split('#')[1]
+
+                    // console.log('Ball1 : ', cell_ball1);
+                    // console.log('Ball2 : ', cell_ball2);
+                    // console.log('Ball3 : ', cell_ball3);
+
+                    if(cell_player !== cell_ball1 && cell_player !== cell_ball2 && cell_player !== cell_ball3){
                         this.delPlayer();
-                        this.updateGrid(["PlayerCell", body.results.bindings[0].X.value, body.results.bindings[0].Y.value]);
+                        this.updateGrid(["PlayerCell", player_X, player_Y]);
                         this.update_player(side);
                         this.forceRerender();
                     }
                     else {
-                        console.log("Action Impossible");
+                        console.log('Action Impossible Ball');
                     }
                 });
             },
