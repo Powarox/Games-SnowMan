@@ -94,14 +94,8 @@
                 }).then(({ body }) => {
                     if(body.results.bindings[0]) {
                         let cell_player = body.results.bindings[0].Cell.value.split('#')[1];
-                        // console.log('Player : ', cell_player);
 
                         this.test_if_ball_here(body.results.bindings[0].X.value, body.results.bindings[0].Y.value, side, cell_player);
-
-                        // this.delPlayer();
-                        // this.updateGrid(["PlayerCell", body.results.bindings[0].X.value, body.results.bindings[0].Y.value]);
-                        // this.update_player(side);
-                        // this.forceRerender();
                     }
                     else {
                         console.log('Action Impossible Wall' );
@@ -139,7 +133,8 @@
                         this.forceRerender();
                     }
                     else {
-                        console.log('Action Impossible Ball');
+                        console.log('Need to moove the ball');
+
                     }
                 });
             },
