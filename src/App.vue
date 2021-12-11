@@ -7,7 +7,6 @@
 
 <script>
 import Grille from './components/Grille.vue'
-// import Grille from './Ontologie/HelloWorld.vue'
 
 export default {
   name: 'App',
