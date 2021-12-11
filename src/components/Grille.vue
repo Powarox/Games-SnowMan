@@ -40,13 +40,10 @@
     <br><br>
 
     <button @click="test_moove()">test</button>
-
-    <!-- <button @click="create_grid()">Create Grid</button> -->
-
-    <button @click="build_grid()">Build Grid</button>
-
     <button @click="build_grid()">Start Game</button>
 
+    <!-- <button @click="create_grid()">Create Grid</button> -->
+    <!-- <button @click="build_grid()">Build Grid</button> -->
     <!-- <button @click="updateCss()">Update Game</button> -->
 
 </template>
