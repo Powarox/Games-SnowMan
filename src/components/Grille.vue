@@ -63,6 +63,24 @@
         beforeMount(){
             this.createGrid();
         },
+
+        data() {
+            return {
+                elem: 1,
+                grid: [],
+
+                hasBall1: false,
+                hasBall2: false,
+                hasBall3: false,
+
+                has_Ball1_On_Ball2: false,  // Fail 1
+                has_Ball1_On_Ball3: false,  // Fail 2
+                has_Ball2_On_Ball3: false,  // Step 1
+
+                succes: false               // Succes
+            }
+        },
+
         methods: {
             ...mapActions([
                 'createGrid', 'updateGrid', 'delPlayer'
@@ -91,8 +109,10 @@
                 }).then(({ body }) => {
                     if(body.results.bindings[0]) {
                         let cell_player = body.results.bindings[0].Cell.value.split('#')[1];
-
-                        this.test_if_ball_here(body.results.bindings[0].X.value, body.results.bindings[0].Y.value, side, cell_player);
+                        console.log(body.results.bindings[0].X.value);
+                        console.log(body.results.bindings[0].Y.value);
+                        console.log(body.results.bindings[0]);
+                        this.is_Some_Ball(body.results.bindings[0].X.value, body.results.bindings[0].Y.value, side, cell_player);
                     }
                     else {
                         console.log('Action Impossible Wall' );
@@ -100,7 +120,7 @@
                 });
             },
 
-            test_if_ball_here(player_X, player_Y, side, cell_player){
+            is_Some_Ball(player_X, player_Y, side, cell_player){
                 let query_search = `
                     SELECT ?Ball1 ?Ball2 ?Ball3
                     WHERE {
@@ -122,16 +142,26 @@
                     // console.log('Ball1 : ', cell_ball1);
                     // console.log('Ball2 : ', cell_ball2);
                     // console.log('Ball3 : ', cell_ball3);
+                    // console.log('Player : ', cell_player);
 
-                    if(cell_player !== cell_ball1 && cell_player !== cell_ball2 && cell_player !== cell_ball3){
-                        this.delPlayer();
-                        this.updateGrid(["PlayerCell", player_X, player_Y]);
-                        this.update_player(side);
-                        this.forceRerender();
-                    }
-                    else {
-                        console.log('Need to moove the ball');
+                    switch (cell_player) {
+                        case cell_ball1:
+                            console.log('Need to moove the ball1');
+                            break;
 
+                        case cell_ball2:
+                            console.log('Need to moove the ball2');
+                            break;
+
+                        case cell_ball3:
+                            console.log('Need to moove the ball3');
+                            break;
+
+                        default:
+                            this.delPlayer();
+                            this.updateGrid(["PlayerCell", player_X, player_Y]);
+                            this.update_player(side);
+                            this.forceRerender();
                     }
                 });
             },
@@ -199,6 +229,7 @@
                 this.elem += 1;
             }
         },
+
         computed: {
             ...mapGetters([
                 'getGrid', 'getPlayer', 'getBall1', 'getBall2', 'getBall3'
@@ -225,12 +256,6 @@
             //
             //     return this.grid;
             // }
-        },
-        data() {
-            return {
-                elem: 1,
-                grid: []
-            }
         }
     }
 </script>
@@ -324,8 +349,8 @@
         background-image: url('../assets/fail2.png');
     }
 
-    .fail3 {
-        background-image: url('../assets/fail3.png');
+    .step1 {
+        background-image: url('../assets/step1.png');
     }
 
 </style>
