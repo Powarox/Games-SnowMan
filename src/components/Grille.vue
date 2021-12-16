@@ -109,10 +109,11 @@
                 }).then(({ body }) => {
                     if(body.results.bindings[0]) {
                         let cell_player = body.results.bindings[0].Cell.value.split('#')[1];
-                        console.log(body.results.bindings[0].X.value);
-                        console.log(body.results.bindings[0].Y.value);
-                        console.log(body.results.bindings[0]);
                         this.is_Some_Ball(body.results.bindings[0].X.value, body.results.bindings[0].Y.value, side, cell_player);
+
+                        // console.log(body.results.bindings[0].X.value);
+                        // console.log(body.results.bindings[0].Y.value);
+                        // console.log(body.results.bindings[0]);
                     }
                     else {
                         console.log('Action Impossible Wall' );
