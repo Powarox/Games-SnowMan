@@ -44,6 +44,18 @@ export const store = createStore({
 
         delPlayer({commit}){
             commit('DELPLAYER');
+        },
+
+        delBall1({commit}){
+            commit('DELBALL1');
+        },
+
+        delBall2({commit}){
+            commit('DELBALL2');
+        },
+
+        delBall3({commit}){
+            commit('DELBALL3');
         }
     },
 
@@ -96,6 +108,18 @@ export const store = createStore({
 
         DELPLAYER(state) {
             state.grid[state.PlayerCell.Y][state.PlayerCell.X].State = 'none';
+        },
+
+        DELBALL(state) {
+            state.grid[state.Ball1.Y][state.Ball1.X].State = 'none';
+        },
+
+        DELBALL2(state) {
+            state.grid[state.Ball2.Y][state.Ball2.X].State = 'none';
+        },
+
+        DELBALL3(state) {
+            state.grid[state.Ball3.Y][state.Ball3.X].State = 'none';
         }
     }
 });

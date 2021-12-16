@@ -11,27 +11,27 @@
 
     <div class="moove">
         <div id="top_btn">
-            <button v-on:click="moove_player('isNorth')">
+            <button v-on:click="moove_player('isNorth', 'hasNorth')">
                 <i class="fas fa-arrow-up"></i>  Haut  <i class="fas fa-arrow-up"></i>
             </button>
         </div>
 
         <div id="center_btn">
-            <button v-on:click="moove_player('isWest')">
+            <button v-on:click="moove_player('isWest', 'hasWest')">
                 <i class="fas fa-arrow-left"></i>  Gauche  <i class="fas fa-arrow-left"></i>
             </button>
 
-            <button @keyup.up="moove_player('isNorth')" @keyup.left="moove_player('isWest')"
-                @keyup.right="moove_player('isEast')" @keyup.down="moove_player('isSouth')">Clavier
+            <button @keyup.up="moove_player('isNorth', 'hasNorth')" @keyup.left="moove_player('isWest', 'hasWest')"
+                @keyup.right="moove_player('isEast', 'hasEast')" @keyup.down="moove_player('isSouth', 'hasSouth')">Clavier
             </button>
 
-            <button v-on:click="moove_player('isEast')">
+            <button v-on:click="moove_player('isEast', 'hasEast')">
                 <i class="fas fa-arrow-right"></i>  Droite  <i class="fas fa-arrow-right"></i>
             </button>
         </div>
 
         <div id="down_btn">
-            <button v-on:click="moove_player('isSouth')">
+            <button v-on:click="moove_player('isSouth', 'hasSouth')">
                 <i class="fas fa-arrow-down"></i>  Bas  <i class="fas fa-arrow-down"></i>
             </button>
         </div>
@@ -92,7 +92,7 @@
                 console.log(test.split('_'));
             },
 
-            moove_player(side) {
+            moove_player(side, direction) {
                 let query_search = `
                     SELECT ?Cell ?X ?Y
                     WHERE {
@@ -109,7 +109,7 @@
                 }).then(({ body }) => {
                     if(body.results.bindings[0]) {
                         let cell_player = body.results.bindings[0].Cell.value.split('#')[1];
-                        this.is_Some_Ball(body.results.bindings[0].X.value, body.results.bindings[0].Y.value, side, cell_player);
+                        this.is_Some_Ball(body.results.bindings[0].X.value, body.results.bindings[0].Y.value, side, cell_player, direction);
 
                         // console.log(body.results.bindings[0].X.value);
                         // console.log(body.results.bindings[0].Y.value);
@@ -121,7 +121,7 @@
                 });
             },
 
-            is_Some_Ball(player_X, player_Y, side, cell_player){
+            is_Some_Ball(player_X, player_Y, side, cell_player, direction){
                 let query_search = `
                     SELECT ?Ball1 ?Ball2 ?Ball3
                     WHERE {
@@ -148,17 +148,23 @@
                     switch (cell_player) {
                         case cell_ball1:
                             console.log('Need to moove the ball1');
+                            this.is_Some_Second_Ball('Ball1', 'Ball2', direction, side);
+                            this.is_Some_Second_Ball('Ball1', 'Ball3', direction, side);
                             break;
 
                         case cell_ball2:
                             console.log('Need to moove the ball2');
+                            this.is_Some_Second_Ball('Ball2', 'Ball1', direction, side);
+                            this.is_Some_Second_Ball('Ball2', 'Ball3', direction, side);
                             break;
 
                         case cell_ball3:
                             console.log('Need to moove the ball3');
+                            this.is_Some_Second_Ball('Ball3', 'Ball1', direction, side);
+                            this.is_Some_Second_Ball('Ball3', 'Ball2', direction, side);
                             break;
 
-                        default:
+                        default:    // Pas de Ball, Player moove
                             this.delPlayer();
                             this.updateGrid(["PlayerCell", player_X, player_Y]);
                             this.update_player(side);
@@ -167,7 +173,39 @@
                 });
             },
 
-            update_player(dir){
+            is_Some_Second_Ball(ball, cible, direction, side){
+                let query_search = `
+                    ASK WHERE {
+                        ?Cible a grid:`+cible+` .
+                        ?Ball rdf:type grid:`+ball+` .
+                        ?Ball grid:`+direction+` ?Cible .
+                    }
+                `;
+
+                query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
+                    limit: 10,
+                    offset: 0,
+                    reasoning: true
+                }).then(({ body }) => {
+                    if(body.boolean){
+                        console.log('Empilement : ' + ball + ' --> ' + cible);
+                    }
+                    else {
+                        console.log('Pas de boule moove & Attention au wall');
+                        this.delPlayer();
+                        this.updateGrid(["PlayerCell", player_X, player_Y]);
+                        this.update_player(side);
+
+                        this.delBall();
+
+
+                        this.forceRerender();
+                    }
+
+                });
+            },
+
+            update_player(side){
                 let query_search = `
                     DELETE {
                         ?c rdf:type grid:PlayerCell .
@@ -177,7 +215,7 @@
                     }
                     WHERE {
                         ?c rdf:type grid:PlayerCell .
-                        ?dir rdf:type grid:`+dir+` .
+                        ?dir rdf:type grid:`+side+` .
                     }
                 `;
 
