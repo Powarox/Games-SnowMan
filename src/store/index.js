@@ -76,10 +76,7 @@ export const store = createStore({
         },
 
         UPDATEGRID(state, list) {
-            // console.log(list[0]);
-
             state.grid[list[2]][list[1]].State = list[0];
-
             switch (list[0]) {
                 case 'PlayerCell': state.PlayerCell = {
                     'X' : list[1],
@@ -102,7 +99,6 @@ export const store = createStore({
                 }
                     break;
                 default:
-
             }
         },
 
@@ -110,7 +106,7 @@ export const store = createStore({
             state.grid[state.PlayerCell.Y][state.PlayerCell.X].State = 'none';
         },
 
-        DELBALL(state) {
+        DELBALL1(state) {
             state.grid[state.Ball1.Y][state.Ball1.X].State = 'none';
         },
 

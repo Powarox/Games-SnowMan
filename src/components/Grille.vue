@@ -157,19 +157,19 @@
                         case cell_ball1:
                             console.log('Need to moove the ball1');
                             this.is_Some_Second_Ball('Ball1', 'Ball2', ball1_XY, ball2_XY, player_XY, direction, side);
-                            this.is_Some_Second_Ball('Ball1', 'Ball3', ball1_XY, ball3_XY, player_XY, direction, side);
+                            // this.is_Some_Second_Ball('Ball1', 'Ball3', ball1_XY, ball3_XY, player_XY, direction, side);
                             break;
 
                         case cell_ball2:
                             console.log('Need to moove the ball2');
                             this.is_Some_Second_Ball('Ball2', 'Ball1', ball2_XY, ball1_XY, player_XY, direction, side);
-                            this.is_Some_Second_Ball('Ball2', 'Ball3', ball2_XY, ball3_XY, player_XY, direction, side);
+                            // this.is_Some_Second_Ball('Ball2', 'Ball3', ball2_XY, ball3_XY, player_XY, direction, side);
                             break;
 
                         case cell_ball3:
                             console.log('Need to moove the ball3');
                             this.is_Some_Second_Ball('Ball3', 'Ball1', ball3_XY, ball1_XY, player_XY, direction, side);
-                            this.is_Some_Second_Ball('Ball3', 'Ball2', ball3_XY, ball2_XY, player_XY, direction, side);
+                            // this.is_Some_Second_Ball('Ball3', 'Ball2', ball3_XY, ball2_XY, player_XY, direction, side);
                             break;
 
                         default:    // Pas de Ball, Player moove
@@ -188,7 +188,7 @@
                         ?Ball rdf:type grid:`+ball+` .
                         ?Ball grid:`+direction+` ?Cible .
                     }
-                `;  // possibilité de test Wall ou NotWall avec cible
+                `;
 
                 query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
                     limit: 10,
@@ -199,13 +199,13 @@
                         console.log('Empilement : ' + ball + ' --> ' + cible);
                     }
                     else {
-                        this.is_Some_Wall(ball, 'Wall', direction, side);
+                        this.is_Some_Wall(ball, 'Wall', ball_XY, cible_XY, player_XY, direction, side);
                     }
 
                 });
             },
 
-            is_Some_Wall(ball, cible, direction, side){
+            is_Some_Wall(ball, cible, ball_XY, cible_XY, player_XY, direction, side){
                 let query_search = `
                     ASK WHERE {
                         ?Cible a grid:`+cible+` .
@@ -221,21 +221,44 @@
                 }).then(({ body }) => {
                     if(!body.boolean){
                         console.log('Pas de boule moove ' + side);
+
+                        this.delPlayer();
+                        this.delBall2();
+                        if(ball === 'Ball1'){
+                            this.delBall1();
+                        }
+                        if(ball === 'Ball2'){
+                            this.delBall2();
+                        }
+                        if(ball === 'Ball3'){
+                            this.delBall3();
+                        }
+
+                        this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
+                        switch (direction) {
+                            case "hasNorth":
+                                this.updateGrid([ball, parseInt(ball_XY['Y'] - 1), parseInt(ball_XY['Y'])]);
+                                break;
+                            case "hasSouth":
+                                this.updateGrid([ball, parseInt(ball_XY['X'] + 1), parseInt(ball_XY['Y'])]);
+                                break;
+                            case "hasEast":
+                                this.updateGrid([ball, parseInt(ball_XY['X']), parseInt(ball_XY['Y'] + 1)]);
+                                break;
+                            case "hasWest":
+                                this.updateGrid([ball, parseInt(ball_XY['X']), parseInt(ball_XY['Y'] - 1)]);
+                                break;
+                            default:
+                        }
+
+                        this.update_Player(side);
+                        this.update_Ball(ball, side);
+
+                        this.forceRerender();
                     }
                     else {
                         console.log('Wall after ' + ball);
                     }
-
-                    // this.delPlayer();
-                    // // this.delBall();
-                    //
-                    // this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
-                    // // this.updateGrid([ball, ball_XY['X'], ball_XY['Y']]);
-                    //
-                    // this.update_Player(side);
-                    // // this.update_Ball(ball, side);
-                    //
-                    // this.forceRerender();
                 });
             },
 
