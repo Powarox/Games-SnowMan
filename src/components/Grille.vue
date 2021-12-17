@@ -235,7 +235,6 @@
                         }
 
                         this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
-
                         switch (direction) {
                             case "hasNorth":
                                 this.updateGrid([ball, ball_XY['X'] - 1, ball_XY['Y']]);
@@ -255,7 +254,7 @@
                         this.update_Player(side);
                         this.update_Ball(ball, side);
 
-                        this.forceRerender();
+                        setTimeout(() => { this.forceRerender(); }, 500);
                     }
                     else {
                         console.log('Wall after ' + ball);
@@ -287,6 +286,8 @@
             },
 
             update_Ball(ball, side){
+                console.log('ball : ' + ball);
+                console.log('side : ' + side);
                 let query_search = `
                     DELETE {
                         ?c rdf:type grid:`+ball+` .
@@ -305,6 +306,7 @@
                     offset: 0,
                     reasoning: true
                 }).then(({ body }) => {
+                    console.log(body);
                     return body;
                 });
             },
