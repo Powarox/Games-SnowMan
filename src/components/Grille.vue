@@ -83,7 +83,7 @@
 
         methods: {
             ...mapActions([
-                'createGrid', 'updateGrid', 'delPlayer'
+                'createGrid', 'updateGrid', 'delPlayer', 'delBall1', 'delBall2', 'delBall3'
             ]),
 
             test_moove() {
@@ -109,7 +109,7 @@
                 }).then(({ body }) => {
                     if(body.results.bindings[0]) {
                         let cell_player = body.results.bindings[0].Cell.value.split('#')[1];
-                        let player_XY = {'X': body.results.bindings[0].X.value, 'Y': body.results.bindings[0].Y.value}
+                        let player_XY = {'X': parseInt(body.results.bindings[0].X.value), 'Y': parseInt(body.results.bindings[0].Y.value)}
                         this.is_Some_Ball(player_XY, cell_player, direction, side);
 
                         console.log(cell_player);
@@ -149,9 +149,9 @@
                     let cell_ball2 = body.results.bindings[0].Ball2.value.split('#')[1];
                     let cell_ball3 = body.results.bindings[0].Ball3.value.split('#')[1];
 
-                    let ball1_XY = {'X': body.results.bindings[0].X1.value, 'Y': body.results.bindings[0].Y1.value}
-                    let ball2_XY = {'X': body.results.bindings[0].X2.value, 'Y': body.results.bindings[0].Y2.value}
-                    let ball3_XY = {'X': body.results.bindings[0].X3.value, 'Y': body.results.bindings[0].Y3.value}
+                    let ball1_XY = {'X': parseInt(body.results.bindings[0].X1.value), 'Y': parseInt(body.results.bindings[0].Y1.value)}
+                    let ball2_XY = {'X': parseInt(body.results.bindings[0].X2.value), 'Y': parseInt(body.results.bindings[0].Y2.value)}
+                    let ball3_XY = {'X': parseInt(body.results.bindings[0].X3.value), 'Y': parseInt(body.results.bindings[0].Y3.value)}
 
                     switch (cell_player) {
                         case cell_ball1:
@@ -223,7 +223,7 @@
                         console.log('Pas de boule moove ' + side);
 
                         this.delPlayer();
-                        this.delBall2();
+
                         if(ball === 'Ball1'){
                             this.delBall1();
                         }
@@ -235,18 +235,19 @@
                         }
 
                         this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
+
                         switch (direction) {
                             case "hasNorth":
-                                this.updateGrid([ball, parseInt(ball_XY['Y'] - 1), parseInt(ball_XY['Y'])]);
+                                this.updateGrid([ball, ball_XY['X'] - 1, ball_XY['Y']]);
                                 break;
                             case "hasSouth":
-                                this.updateGrid([ball, parseInt(ball_XY['X'] + 1), parseInt(ball_XY['Y'])]);
+                                this.updateGrid([ball, ball_XY['X'] + 1, ball_XY['Y']]);
                                 break;
                             case "hasEast":
-                                this.updateGrid([ball, parseInt(ball_XY['X']), parseInt(ball_XY['Y'] + 1)]);
+                                this.updateGrid([ball, ball_XY['X'], ball_XY['Y'] + 1]);
                                 break;
                             case "hasWest":
-                                this.updateGrid([ball, parseInt(ball_XY['X']), parseInt(ball_XY['Y'] - 1)]);
+                                this.updateGrid([ball, ball_XY['X'], ball_XY['Y'] - 1]);
                                 break;
                             default:
                         }
@@ -331,7 +332,7 @@
                     offset: 0,
                     reasoning: true
                 }).then(({ body }) => {
-                    this.updateGrid([find, body.results.bindings[0].X.value, body.results.bindings[0].Y.value]);
+                    this.updateGrid([find, parseInt(body.results.bindings[0].X.value), parseInt(body.results.bindings[0].Y.value)]);
                 });
             },
 
