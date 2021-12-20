@@ -96,6 +96,7 @@ export default {
           // return x1,y1
         });
       },
+
       test_dir(direction){
          query.execute(conn, 'test', 'ASK WHERE { ?boule rdf:type :Boulle'+direction+' . }', 'application/sparql-results+json', {
            limit: 10,
@@ -117,6 +118,7 @@ export default {
          });
          return 0
        },
+
        test_boule(boule,direction){
          query.execute(conn, 'test', 'ASK WHERE { ?player rdf:type :Cellule_joueur . ?boule rdf:type :'+boule+' . ?boule :'+direction+' ?player . }', 'application/sparql-results+json', {
            limit: 10,
@@ -680,6 +682,7 @@ export default {
         });
       },
 
+      // Call suppr ball
       appel_suppr(){
         for(let i=0;i<10;i++){
             for(let j=0;j<10;j++){
@@ -706,6 +709,7 @@ export default {
           }
       },
 
+      // Call reset ball
       new_position(){
         for(let i=0;i<10;i++){
             for(let j=0;j<10;j++){
