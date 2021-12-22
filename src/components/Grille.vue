@@ -69,15 +69,14 @@
                 elem: 1,
                 grid: [],
 
-                hasBall1: false,
-                hasBall2: false,
-                hasBall3: false,
+                fail_1: false,
+                fail_2: false,
+                step_1: false,
+                succes: false,
 
-                has_Ball1_On_Ball2: false,  // Fail 1
-                has_Ball1_On_Ball3: false,  // Fail 2
-                has_Ball2_On_Ball3: false,  // Step 1
-
-                succes: false               // Succes
+                stage: 'none',
+                ball_on: 'nothing',
+                ball_under: 'nothing',
             }
         },
 
@@ -108,10 +107,10 @@
                     reasoning: true
                 }).then(({ body }) => {
                     if(body.results.bindings[0]) {
-                        console.log('Deplacement joueur vers : ' + cell_player);
                         let cell_player = body.results.bindings[0].Cell.value.split('#')[1];
                         let player_XY = {'X': parseInt(body.results.bindings[0].X.value), 'Y': parseInt(body.results.bindings[0].Y.value)}
                         this.is_Some_Ball(player_XY, cell_player, direction, side);
+                        console.log('Deplacement joueur vers : ' + cell_player);
                     }
                     else {
                         console.log('Action Impossible Wall' );
@@ -193,8 +192,6 @@
                     reasoning: true
                 }).then(({ body }) => {
                     if(body.boolean){
-                        console.log('Empilement : ' + ball + ' --> ' + cible1 + ' ou ' + cible2);
-
                         switch (ball) {
                             case 'Ball1':
                                 this.is_Empilement(ball, cible1, cible2, ball_XY, cible_XY, player_XY, direction, side);
@@ -272,12 +269,34 @@
                     reasoning: true
                 }).then(({ body }) => {
                     if(body.boolean){
-                        console.log('Cible : ' + cible1);
+                        if(ball === 'Ball1'){
+                            this.fail_1 = true;
+                            this.stage = 'fail_1';
+                            this.ball_on = ball;
+                            this.ball_under = cible1;
+                        }
+                        else {
+                            console.log('Empilement Impossible !');
+                        }
                     }
                     else {
-                        console.log('Cible : ' + cible2);
-                        console.log(side);
+                        if(ball === 'Ball1'){
+                            this.fail_2 = true;
+                            this.stage = 'fail_2';
+                            this.ball_on = ball;
+                            this.ball_under = cible2;
+                        }
+                        else {
+                            this.step_1 = true;
+                            this.stage = 'step_1';
+                            this.ball_on = ball;
+                            this.ball_under = cible2;
+                        }
                     }
+                    console.log(this.stage);
+                    console.log(this.ball_on);
+                    console.log(this.ball_under);
+                    console.log(side);
                 });
             },
 
