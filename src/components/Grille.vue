@@ -39,8 +39,8 @@
 
     <br><br>
 
-    <button @click="test_moove()">test</button>
-    <button @click="build_grid()">Start Game</button>
+    <button @click="reset_game()">Reset Game</button>
+    <button @click="prepare_grid()">Start Game</button>
 
     <!-- <button @click="create_grid()">Create Grid</button> -->
     <!-- <button @click="build_grid()">Build Grid</button> -->
@@ -73,10 +73,6 @@
                 fail_2: false,
                 step_1: false,
                 succes: false,
-
-                stage: 'none',
-                ball_on: 'nothing',
-                ball_under: 'nothing',
             }
         },
 
@@ -85,7 +81,34 @@
                 'createGrid', 'updateGrid', 'delPlayer', 'delBall1', 'delBall2', 'delBall3'
             ]),
 
-            test_moove() {
+            prepare_grid() {
+                this.build_grid('PlayerCell');
+                this.build_grid('Ball1');
+                this.build_grid('Ball2');
+                this.build_grid('Ball3');
+                setTimeout(() => { this.forceRerender(); }, 500);
+            },
+
+            build_grid(find) {
+                let query_search = `
+                    SELECT ?Find ?X ?Y
+                    WHERE{
+                        ?Find a grid:`+find+` .
+                        ?Find grid:X ?X .
+                        ?Find grid:Y ?Y .
+                    }
+                `;
+
+                query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
+                    limit: 10,
+                    offset: 0,
+                    reasoning: true
+                }).then(({ body }) => {
+                    this.updateGrid([find, parseInt(body.results.bindings[0].X.value), parseInt(body.results.bindings[0].Y.value)]);
+                });
+            },
+
+            reset_game() {
                 console.log(this.grid);
                 let test = "grid:Cell_12";
                 console.log(test.split('_'));
@@ -168,7 +191,7 @@
                             this.is_Some_Second_Ball('Ball3', 'Ball1', 'Ball2', ball3_XY, player_XY, direction, side);
                             break;
 
-                        default:    // Pas de Ball, Player moove
+                        default:
                             this.delPlayer();
                             this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
                             this.update_Player(side);
@@ -211,8 +234,6 @@
                         }
                     }
                     else {
-                        console.log('Pas de boule moove ' + side);
-
                         this.moove_Player_And_Ball(ball, ball, ball_XY, player_XY, direction, side);
                     }
 
@@ -241,16 +262,10 @@
                         if(ball === 'Ball1'){
                             if(this.step_1 === true){
                                 this.succes = true;
-                                this.stage = 'succes';
-
                                 this.moove_Player_And_Ball(ball, 'succes', ball_XY, player_XY, direction, side);
                             }
                             else {
                                 this.fail_1 = true;
-                                this.stage = 'fail_1';
-                                this.ball_on = ball;
-                                this.ball_under = cible1;
-
                                 this.moove_Player_And_Ball(ball, 'fail1', ball_XY, player_XY, direction, side);
                             }
                         }
@@ -261,18 +276,10 @@
                     else {
                         if(ball === 'Ball1'){
                             this.fail_2 = true;
-                            this.stage = 'fail_2';
-                            this.ball_on = ball;
-                            this.ball_under = cible2;
-
                             this.moove_Player_And_Ball(ball, 'fail2', ball_XY, player_XY, direction, side);
                         }
                         else {
                             this.step_1 = true;
-                            this.stage = 'step_1';
-                            this.ball_on = ball;
-                            this.ball_under = cible2;
-
                             this.moove_Player_And_Ball(ball, 'step1', ball_XY, player_XY, direction, side);
                         }
                     }
@@ -362,33 +369,6 @@
                     reasoning: true
                 }).then(({ body }) => {
                     return body;
-                });
-            },
-
-            build_grid() {
-                this.stardog_build_query('PlayerCell');
-                this.stardog_build_query('Ball1');
-                this.stardog_build_query('Ball2');
-                this.stardog_build_query('Ball3');
-                setTimeout(() => { this.forceRerender(); }, 500);
-            },
-
-            stardog_build_query(find) {
-                let query_search = `
-                    SELECT ?Find ?X ?Y
-                    WHERE{
-                        ?Find a grid:`+find+` .
-                        ?Find grid:X ?X .
-                        ?Find grid:Y ?Y .
-                    }
-                `;
-
-                query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
-                    limit: 10,
-                    offset: 0,
-                    reasoning: true
-                }).then(({ body }) => {
-                    this.updateGrid([find, parseInt(body.results.bindings[0].X.value), parseInt(body.results.bindings[0].Y.value)]);
                 });
             },
 
