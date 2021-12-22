@@ -110,7 +110,6 @@
                         let cell_player = body.results.bindings[0].Cell.value.split('#')[1];
                         let player_XY = {'X': parseInt(body.results.bindings[0].X.value), 'Y': parseInt(body.results.bindings[0].Y.value)}
                         this.is_Some_Ball(player_XY, cell_player, direction, side);
-                        console.log('Deplacement joueur vers : ' + cell_player);
                     }
                     else {
                         console.log('Action Impossible Wall' );
@@ -149,17 +148,23 @@
 
                     switch (cell_player) {
                         case cell_ball1:
-                            console.log('Need to moove the ball1');
+                            if(this.fail_1 === true || this.fail_2 === true){
+                                break;
+                            }
                             this.is_Some_Second_Ball('Ball1', 'Ball2', 'Ball3', ball1_XY, ball3_XY, player_XY, direction, side);
                             break;
 
                         case cell_ball2:
-                            console.log('Need to moove the ball2');
+                            if(this.fail_1 === true || this.step_1 === true){
+                                break;
+                            }
                             this.is_Some_Second_Ball('Ball2', 'Ball1', 'Ball3', ball2_XY, ball3_XY, player_XY, direction, side);
                             break;
 
                         case cell_ball3:
-                            console.log('Need to moove the ball3');
+                            if(this.fail_2 === true || this.step_1 === true){
+                                break;
+                            }
                             this.is_Some_Second_Ball('Ball3', 'Ball1', 'Ball2', ball3_XY, ball2_XY, player_XY, direction, side);
                             break;
 
