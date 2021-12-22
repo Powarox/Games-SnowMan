@@ -275,39 +275,74 @@
                 }).then(({ body }) => {
                     if(body.boolean){
                         if(ball === 'Ball1'){
-                            this.fail_1 = true;
-                            this.stage = 'fail_1';
-                            this.ball_on = ball;
-                            this.ball_under = cible1;
+                            if(this.step_1 === true){
+                                this.succes = true;
+                                this.stage = 'succes';
 
-                            this.delPlayer();
-                            this.delBall1();
+                                this.delPlayer();
+                                this.delBall1();
 
-                            this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
-                            switch (direction) {
-                                case "hasNorth":
-                                    this.updateGrid(['fail1', ball_XY['X'] - 1, ball_XY['Y']]);
-                                    break;
+                                this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
+                                switch (direction) {
+                                    case "hasNorth":
+                                        this.updateGrid(['succes', ball_XY['X'] - 1, ball_XY['Y']]);
+                                        break;
 
-                                case "hasSouth":
-                                    this.updateGrid(['fail1', ball_XY['X'] + 1, ball_XY['Y']]);
-                                    break;
+                                    case "hasSouth":
+                                        this.updateGrid(['succes', ball_XY['X'] + 1, ball_XY['Y']]);
+                                        break;
 
-                                case "hasEast":
-                                    this.updateGrid(['fail1', ball_XY['X'], ball_XY['Y'] + 1]);
-                                    break;
+                                    case "hasEast":
+                                        this.updateGrid(['succes', ball_XY['X'], ball_XY['Y'] + 1]);
+                                        break;
 
-                                case "hasWest":
-                                    this.updateGrid(['fail1', ball_XY['X'], ball_XY['Y'] - 1]);
-                                    break;
+                                    case "hasWest":
+                                        this.updateGrid(['succes', ball_XY['X'], ball_XY['Y'] - 1]);
+                                        break;
 
-                                default:
+                                    default:
+                                }
+
+                                this.update_Player(side);
+                                setTimeout(() => {this.update_Ball(ball, side); }, 500);
+
+                                this.forceRerender();
                             }
+                            else {
+                                this.fail_1 = true;
+                                this.stage = 'fail_1';
+                                this.ball_on = ball;
+                                this.ball_under = cible1;
 
-                            this.update_Player(side);
-                            setTimeout(() => {this.update_Ball(ball, side); }, 500);
+                                this.delPlayer();
+                                this.delBall1();
 
-                            this.forceRerender();
+                                this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
+                                switch (direction) {
+                                    case "hasNorth":
+                                        this.updateGrid(['fail1', ball_XY['X'] - 1, ball_XY['Y']]);
+                                        break;
+
+                                    case "hasSouth":
+                                        this.updateGrid(['fail1', ball_XY['X'] + 1, ball_XY['Y']]);
+                                        break;
+
+                                    case "hasEast":
+                                        this.updateGrid(['fail1', ball_XY['X'], ball_XY['Y'] + 1]);
+                                        break;
+
+                                    case "hasWest":
+                                        this.updateGrid(['fail1', ball_XY['X'], ball_XY['Y'] - 1]);
+                                        break;
+
+                                    default:
+                                }
+
+                                this.update_Player(side);
+                                setTimeout(() => {this.update_Ball(ball, side); }, 500);
+
+                                this.forceRerender();
+                            }
                         }
                         else {
                             console.log('Empilement Impossible !');
@@ -385,10 +420,6 @@
                             this.forceRerender();
                         }
                     }
-                    // console.log(this.stage);
-                    // console.log(this.ball_on);
-                    // console.log(this.ball_under);
-                    // console.log(side);
                 });
             },
 
