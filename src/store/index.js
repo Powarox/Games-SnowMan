@@ -107,10 +107,6 @@ export const store = createStore({
         },
 
         DELBALL1(state) {
-            console.log('state');
-            console.log(state.getBall1());
-            console.log(state.ball1.Y);
-            console.log(state.grid[state.Ball1.Y]);
             state.grid[state.Ball1.Y][state.Ball1.X].State = 'none';
         },
 

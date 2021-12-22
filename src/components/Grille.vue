@@ -108,15 +108,10 @@
                     reasoning: true
                 }).then(({ body }) => {
                     if(body.results.bindings[0]) {
+                        console.log('Deplacement joueur vers : ' + cell_player);
                         let cell_player = body.results.bindings[0].Cell.value.split('#')[1];
                         let player_XY = {'X': parseInt(body.results.bindings[0].X.value), 'Y': parseInt(body.results.bindings[0].Y.value)}
                         this.is_Some_Ball(player_XY, cell_player, direction, side);
-
-                        console.log(cell_player);
-
-                        // console.log(body.results.bindings[0].X.value);
-                        // console.log(body.results.bindings[0].Y.value);
-                        // console.log(body.results.bindings[0]);
                     }
                     else {
                         console.log('Action Impossible Wall' );
@@ -156,20 +151,17 @@
                     switch (cell_player) {
                         case cell_ball1:
                             console.log('Need to moove the ball1');
-                            this.is_Some_Second_Ball('Ball1', 'Ball2', ball1_XY, ball2_XY, player_XY, direction, side);
-                            // this.is_Some_Second_Ball('Ball1', 'Ball3', ball1_XY, ball3_XY, player_XY, direction, side);
+                            this.is_Some_Second_Ball('Ball1', 'Ball2', 'Ball3', ball1_XY, ball3_XY, player_XY, direction, side);
                             break;
 
                         case cell_ball2:
                             console.log('Need to moove the ball2');
-                            // this.is_Some_Second_Ball('Ball2', 'Ball1', ball2_XY, ball1_XY, player_XY, direction, side);
-                            this.is_Some_Second_Ball('Ball2', 'Ball3', ball2_XY, ball3_XY, player_XY, direction, side);
+                            this.is_Some_Second_Ball('Ball2', 'Ball1', 'Ball3', ball2_XY, ball3_XY, player_XY, direction, side);
                             break;
 
                         case cell_ball3:
                             console.log('Need to moove the ball3');
-                            // this.is_Some_Second_Ball('Ball3', 'Ball1', ball3_XY, ball1_XY, player_XY, direction, side);
-                            this.is_Some_Second_Ball('Ball3', 'Ball2', ball3_XY, ball2_XY, player_XY, direction, side);
+                            this.is_Some_Second_Ball('Ball3', 'Ball1', 'Ball2', ball3_XY, ball2_XY, player_XY, direction, side);
                             break;
 
                         default:    // Pas de Ball, Player moove
@@ -181,15 +173,17 @@
                 });
             },
 
-            is_Some_Second_Ball(ball, cible, ball_XY, cible_XY, player_XY, direction, side){
+            is_Some_Second_Ball(ball, cible1, cible2, ball_XY, cible_XY, player_XY, direction, side){
                 let query_search = `
                     ASK WHERE {
-                        ?Cible a grid:`+cible+` .
+                        ?BallA a grid:`+cible1+` .
+                        ?BallB a grid:`+cible2+` .
                         ?NotWall a grid:NotWall .
-                        ?Ball rdf:type grid:`+ball+` .
-                        ?Ball grid:`+direction+` ?condition .
 
-                        FILTER (?condition = ?NotWall && ?condition = ?Cible)
+                        ?Ball rdf:type grid:`+ball+` .
+                        ?Ball grid:`+direction+` ?c .
+
+                        FILTER ((?c = ?NotWall && ?c = ?BallA) || (?c = ?NotWall && ?c = ?BallB))
                     }
                 `;
 
@@ -199,7 +193,20 @@
                     reasoning: true
                 }).then(({ body }) => {
                     if(body.boolean){
-                        console.log('Empilement : ' + ball + ' --> ' + cible);
+                        console.log('Empilement : ' + ball + ' --> ' + cible1 + ' ou ' + cible2);
+
+                        switch (ball) {
+                            case 'Ball1':
+                                this.is_Empilement(ball, cible1, cible2, ball_XY, cible_XY, player_XY, direction, side);
+                                break;
+
+                            case 'Ball2':
+                                this.is_Empilement(ball, cible1, cible2, ball_XY, cible_XY, player_XY, direction, side);
+                                break;
+
+                            default:
+                                console.log('Empilement impossible !');
+                        }
                     }
                     else {
                         console.log('Pas de boule moove ' + side);
@@ -221,15 +228,19 @@
                             case "hasNorth":
                                 this.updateGrid([ball, ball_XY['X'] - 1, ball_XY['Y']]);
                                 break;
+
                             case "hasSouth":
                                 this.updateGrid([ball, ball_XY['X'] + 1, ball_XY['Y']]);
                                 break;
+
                             case "hasEast":
                                 this.updateGrid([ball, ball_XY['X'], ball_XY['Y'] + 1]);
                                 break;
+
                             case "hasWest":
                                 this.updateGrid([ball, ball_XY['X'], ball_XY['Y'] - 1]);
                                 break;
+
                             default:
                         }
 
@@ -239,6 +250,34 @@
                         this.forceRerender();
                     }
 
+                });
+            },
+
+            is_Empilement(ball, cible1, cible2, ball_XY, cible_XY, player_XY, direction, side){
+                let query_search = `
+                    ASK WHERE {
+                        ?cible a grid:`+cible1+` .
+                        ?NotWall a grid:NotWall .
+
+                        ?Ball rdf:type grid:`+ball+` .
+                        ?Ball grid:`+direction+` ?c .
+
+                        FILTER (?c = ?NotWall && ?c = ?cible)
+                    }
+                `;
+
+                query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
+                    limit: 10,
+                    offset: 0,
+                    reasoning: true
+                }).then(({ body }) => {
+                    if(body.boolean){
+                        console.log('Cible : ' + cible1);
+                    }
+                    else {
+                        console.log('Cible : ' + cible2);
+                        console.log(side);
+                    }
                 });
             },
 
@@ -266,8 +305,6 @@
             },
 
             update_Ball(ball, side){
-                console.log('ball : ' + ball);
-                console.log('side : ' + side);
                 let query_search = `
                     DELETE {
                         ?c rdf:type grid:`+ball+` .
@@ -286,7 +323,6 @@
                     offset: 0,
                     reasoning: true
                 }).then(({ body }) => {
-                    console.log(body);
                     return body;
                 });
             },
@@ -336,28 +372,6 @@
             ...mapGetters([
                 'getGrid', 'getPlayer', 'getBall1', 'getBall2', 'getBall3'
             ]),
-
-            // filterTodos(){
-            //     if(this.filter === "todo"){
-            //         return this.getallTodos.filter((todo) => !todo.completed);
-            //     } else if(this.filter === "done"){
-            //         return this.getallTodos.filter((todo) => todo.completed);
-            //     }
-            //     return this.getallTodos;
-            // }
-
-            // remplir_grid() {
-            //     let rows_div = document.querySelector('.rows');
-            //     let all_elem = rows_div.querySelectorAll('.elem');
-            //
-            //     for(let i = 0; i < rows_div.length; i++){
-            //         for(let j = 0; j < all_elem.length; j++){
-            //             all_elem[i].classList.add(this.grid[i].state);
-            //         }
-            //     }
-            //
-            //     return this.grid;
-            // }
         }
     }
 </script>
