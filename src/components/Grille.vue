@@ -162,14 +162,14 @@
 
                         case cell_ball2:
                             console.log('Need to moove the ball2');
-                            this.is_Some_Second_Ball('Ball2', 'Ball1', ball2_XY, ball1_XY, player_XY, direction, side);
-                            // this.is_Some_Second_Ball('Ball2', 'Ball3', ball2_XY, ball3_XY, player_XY, direction, side);
+                            // this.is_Some_Second_Ball('Ball2', 'Ball1', ball2_XY, ball1_XY, player_XY, direction, side);
+                            this.is_Some_Second_Ball('Ball2', 'Ball3', ball2_XY, ball3_XY, player_XY, direction, side);
                             break;
 
                         case cell_ball3:
                             console.log('Need to moove the ball3');
-                            this.is_Some_Second_Ball('Ball3', 'Ball1', ball3_XY, ball1_XY, player_XY, direction, side);
-                            // this.is_Some_Second_Ball('Ball3', 'Ball2', ball3_XY, ball2_XY, player_XY, direction, side);
+                            // this.is_Some_Second_Ball('Ball3', 'Ball1', ball3_XY, ball1_XY, player_XY, direction, side);
+                            this.is_Some_Second_Ball('Ball3', 'Ball2', ball3_XY, ball2_XY, player_XY, direction, side);
                             break;
 
                         default:    // Pas de Ball, Player moove
@@ -185,8 +185,11 @@
                 let query_search = `
                     ASK WHERE {
                         ?Cible a grid:`+cible+` .
+                        ?NotWall a grid:NotWall .
                         ?Ball rdf:type grid:`+ball+` .
-                        ?Ball grid:`+direction+` ?Cible .
+                        ?Ball grid:`+direction+` ?condition .
+
+                        FILTER (?condition = ?NotWall && ?condition = ?Cible)
                     }
                 `;
 
@@ -199,27 +202,6 @@
                         console.log('Empilement : ' + ball + ' --> ' + cible);
                     }
                     else {
-                        this.is_Some_Wall(ball, 'Wall', ball_XY, cible_XY, player_XY, direction, side);
-                    }
-
-                });
-            },
-
-            is_Some_Wall(ball, cible, ball_XY, cible_XY, player_XY, direction, side){
-                let query_search = `
-                    ASK WHERE {
-                        ?Cible a grid:`+cible+` .
-                        ?Ball rdf:type grid:`+ball+` .
-                        ?Ball grid:`+direction+` ?Cible .
-                    }
-                `;
-
-                query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
-                    limit: 10,
-                    offset: 0,
-                    reasoning: true
-                }).then(({ body }) => {
-                    if(!body.boolean){
                         console.log('Pas de boule moove ' + side);
 
                         this.delPlayer();
@@ -254,11 +236,9 @@
                         this.update_Player(side);
                         setTimeout(() => {this.update_Ball(ball, side); }, 500);
 
-                        this.forceRerender(); 
+                        this.forceRerender();
                     }
-                    else {
-                        console.log('Wall after ' + ball);
-                    }
+
                 });
             },
 
