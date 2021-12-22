@@ -76,12 +76,6 @@ export const store = createStore({
         },
 
         UPDATEGRID(state, list) {
-
-            console.log(list);
-            console.log(list[0]);
-            console.log(list[2]);
-            console.log(list[1]);
-
             state.grid[list[2]][list[1]].State = list[0];
             switch (list[0]) {
                 case 'PlayerCell': state.PlayerCell = {

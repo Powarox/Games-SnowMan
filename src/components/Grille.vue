@@ -252,9 +252,9 @@
                         }
 
                         this.update_Player(side);
-                        this.update_Ball(ball, side);
+                        setTimeout(() => {this.update_Ball(ball, side); }, 500);
 
-                        setTimeout(() => { this.forceRerender(); }, 500);
+                        this.forceRerender(); 
                     }
                     else {
                         console.log('Wall after ' + ball);
