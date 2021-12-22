@@ -148,24 +148,24 @@
 
                     switch (cell_player) {
                         case cell_ball1:
-                            if(this.fail_1 === true || this.fail_2 === true){
+                            if(this.fail_1 === true || this.fail_2 === true || this.succes === true){
                                 break;
                             }
-                            this.is_Some_Second_Ball('Ball1', 'Ball2', 'Ball3', ball1_XY, ball3_XY, player_XY, direction, side);
+                            this.is_Some_Second_Ball('Ball1', 'Ball2', 'Ball3', ball1_XY, player_XY, direction, side);
                             break;
 
                         case cell_ball2:
-                            if(this.fail_1 === true || this.step_1 === true){
+                            if(this.fail_1 === true || this.step_1 === true || this.succes === true){
                                 break;
                             }
-                            this.is_Some_Second_Ball('Ball2', 'Ball1', 'Ball3', ball2_XY, ball3_XY, player_XY, direction, side);
+                            this.is_Some_Second_Ball('Ball2', 'Ball1', 'Ball3', ball2_XY, player_XY, direction, side);
                             break;
 
                         case cell_ball3:
-                            if(this.fail_2 === true || this.step_1 === true){
+                            if(this.fail_2 === true || this.step_1 === true || this.succes === true){
                                 break;
                             }
-                            this.is_Some_Second_Ball('Ball3', 'Ball1', 'Ball2', ball3_XY, ball2_XY, player_XY, direction, side);
+                            this.is_Some_Second_Ball('Ball3', 'Ball1', 'Ball2', ball3_XY, player_XY, direction, side);
                             break;
 
                         default:    // Pas de Ball, Player moove
@@ -177,7 +177,7 @@
                 });
             },
 
-            is_Some_Second_Ball(ball, cible1, cible2, ball_XY, cible_XY, player_XY, direction, side){
+            is_Some_Second_Ball(ball, cible1, cible2, ball_XY, player_XY, direction, side){
                 let query_search = `
                     ASK WHERE {
                         ?BallA a grid:`+cible1+` .
@@ -199,11 +199,11 @@
                     if(body.boolean){
                         switch (ball) {
                             case 'Ball1':
-                                this.is_Empilement(ball, cible1, cible2, ball_XY, cible_XY, player_XY, direction, side);
+                                this.is_Empilement(ball, cible1, cible2, ball_XY, player_XY, direction, side);
                                 break;
 
                             case 'Ball2':
-                                this.is_Empilement(ball, cible1, cible2, ball_XY, cible_XY, player_XY, direction, side);
+                                this.is_Empilement(ball, cible1, cible2, ball_XY, player_XY, direction, side);
                                 break;
 
                             default:
@@ -213,49 +213,13 @@
                     else {
                         console.log('Pas de boule moove ' + side);
 
-                        this.delPlayer();
-
-                        if(ball === 'Ball1'){
-                            this.delBall1();
-                        }
-                        if(ball === 'Ball2'){
-                            this.delBall2();
-                        }
-                        if(ball === 'Ball3'){
-                            this.delBall3();
-                        }
-
-                        this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
-                        switch (direction) {
-                            case "hasNorth":
-                                this.updateGrid([ball, ball_XY['X'] - 1, ball_XY['Y']]);
-                                break;
-
-                            case "hasSouth":
-                                this.updateGrid([ball, ball_XY['X'] + 1, ball_XY['Y']]);
-                                break;
-
-                            case "hasEast":
-                                this.updateGrid([ball, ball_XY['X'], ball_XY['Y'] + 1]);
-                                break;
-
-                            case "hasWest":
-                                this.updateGrid([ball, ball_XY['X'], ball_XY['Y'] - 1]);
-                                break;
-
-                            default:
-                        }
-
-                        this.update_Player(side);
-                        setTimeout(() => {this.update_Ball(ball, side); }, 500);
-
-                        this.forceRerender();
+                        this.moove_Player_And_Ball(ball, ball, ball_XY, player_XY, direction, side);
                     }
 
                 });
             },
 
-            is_Empilement(ball, cible1, cible2, ball_XY, cible_XY, player_XY, direction, side){
+            is_Empilement(ball, cible1, cible2, ball_XY, player_XY, direction, side){
                 let query_search = `
                     ASK WHERE {
                         ?cible a grid:`+cible1+` .
@@ -279,34 +243,7 @@
                                 this.succes = true;
                                 this.stage = 'succes';
 
-                                this.delPlayer();
-                                this.delBall1();
-
-                                this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
-                                switch (direction) {
-                                    case "hasNorth":
-                                        this.updateGrid(['succes', ball_XY['X'] - 1, ball_XY['Y']]);
-                                        break;
-
-                                    case "hasSouth":
-                                        this.updateGrid(['succes', ball_XY['X'] + 1, ball_XY['Y']]);
-                                        break;
-
-                                    case "hasEast":
-                                        this.updateGrid(['succes', ball_XY['X'], ball_XY['Y'] + 1]);
-                                        break;
-
-                                    case "hasWest":
-                                        this.updateGrid(['succes', ball_XY['X'], ball_XY['Y'] - 1]);
-                                        break;
-
-                                    default:
-                                }
-
-                                this.update_Player(side);
-                                setTimeout(() => {this.update_Ball(ball, side); }, 500);
-
-                                this.forceRerender();
+                                this.moove_Player_And_Ball(ball, 'succes', ball_XY, player_XY, direction, side);
                             }
                             else {
                                 this.fail_1 = true;
@@ -314,34 +251,7 @@
                                 this.ball_on = ball;
                                 this.ball_under = cible1;
 
-                                this.delPlayer();
-                                this.delBall1();
-
-                                this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
-                                switch (direction) {
-                                    case "hasNorth":
-                                        this.updateGrid(['fail1', ball_XY['X'] - 1, ball_XY['Y']]);
-                                        break;
-
-                                    case "hasSouth":
-                                        this.updateGrid(['fail1', ball_XY['X'] + 1, ball_XY['Y']]);
-                                        break;
-
-                                    case "hasEast":
-                                        this.updateGrid(['fail1', ball_XY['X'], ball_XY['Y'] + 1]);
-                                        break;
-
-                                    case "hasWest":
-                                        this.updateGrid(['fail1', ball_XY['X'], ball_XY['Y'] - 1]);
-                                        break;
-
-                                    default:
-                                }
-
-                                this.update_Player(side);
-                                setTimeout(() => {this.update_Ball(ball, side); }, 500);
-
-                                this.forceRerender();
+                                this.moove_Player_And_Ball(ball, 'fail1', ball_XY, player_XY, direction, side);
                             }
                         }
                         else {
@@ -355,34 +265,7 @@
                             this.ball_on = ball;
                             this.ball_under = cible2;
 
-                            this.delPlayer();
-                            this.delBall1();
-
-                            this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
-                            switch (direction) {
-                                case "hasNorth":
-                                    this.updateGrid(['fail2', ball_XY['X'] - 1, ball_XY['Y']]);
-                                    break;
-
-                                case "hasSouth":
-                                    this.updateGrid(['fail2', ball_XY['X'] + 1, ball_XY['Y']]);
-                                    break;
-
-                                case "hasEast":
-                                    this.updateGrid(['fail2', ball_XY['X'], ball_XY['Y'] + 1]);
-                                    break;
-
-                                case "hasWest":
-                                    this.updateGrid(['fail2', ball_XY['X'], ball_XY['Y'] - 1]);
-                                    break;
-
-                                default:
-                            }
-
-                            this.update_Player(side);
-                            setTimeout(() => {this.update_Ball(ball, side); }, 500);
-
-                            this.forceRerender();
+                            this.moove_Player_And_Ball(ball, 'fail2', ball_XY, player_XY, direction, side);
                         }
                         else {
                             this.step_1 = true;
@@ -390,37 +273,50 @@
                             this.ball_on = ball;
                             this.ball_under = cible2;
 
-                            this.delPlayer();
-                            this.delBall2();
-
-                            this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
-                            switch (direction) {
-                                case "hasNorth":
-                                    this.updateGrid(['step1', ball_XY['X'] - 1, ball_XY['Y']]);
-                                    break;
-
-                                case "hasSouth":
-                                    this.updateGrid(['step1', ball_XY['X'] + 1, ball_XY['Y']]);
-                                    break;
-
-                                case "hasEast":
-                                    this.updateGrid(['step1', ball_XY['X'], ball_XY['Y'] + 1]);
-                                    break;
-
-                                case "hasWest":
-                                    this.updateGrid(['step1', ball_XY['X'], ball_XY['Y'] - 1]);
-                                    break;
-
-                                default:
-                            }
-
-                            this.update_Player(side);
-                            setTimeout(() => {this.update_Ball(ball, side); }, 500);
-
-                            this.forceRerender();
+                            this.moove_Player_And_Ball(ball, 'step1', ball_XY, player_XY, direction, side);
                         }
                     }
                 });
+            },
+
+            moove_Player_And_Ball(ball, stage, ball_XY, player_XY, direction, side){
+                this.delPlayer();
+
+                if(ball === 'Ball1'){
+                    this.delBall1();
+                }
+                if(ball === 'Ball2'){
+                    this.delBall2();
+                }
+                if(ball === 'Ball3'){
+                    this.delBall3();
+                }
+
+                this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
+                switch (direction) {
+                    case "hasNorth":
+                        this.updateGrid([stage, ball_XY['X'] - 1, ball_XY['Y']]);
+                        break;
+
+                    case "hasSouth":
+                        this.updateGrid([stage, ball_XY['X'] + 1, ball_XY['Y']]);
+                        break;
+
+                    case "hasEast":
+                        this.updateGrid([stage, ball_XY['X'], ball_XY['Y'] + 1]);
+                        break;
+
+                    case "hasWest":
+                        this.updateGrid([stage, ball_XY['X'], ball_XY['Y'] - 1]);
+                        break;
+
+                    default:
+                }
+
+                this.update_Player(side);
+                setTimeout(() => {this.update_Ball(ball, side); }, 500);
+
+                this.forceRerender();
             },
 
             update_Player(side){
@@ -514,6 +410,14 @@
             ...mapGetters([
                 'getGrid', 'getPlayer', 'getBall1', 'getBall2', 'getBall3'
             ]),
+
+            endGame(){
+                if(this.succes === true){
+                    // alert('Bien joué !')
+                    console.log('C\'est Gangné !');
+                }
+                return 0;
+            }
         }
     }
 </script>
