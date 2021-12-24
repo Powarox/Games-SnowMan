@@ -135,7 +135,6 @@
                         ?dir3 rdf:type grid:isSouth .
                     }
                 `;
-
                 query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
                     limit: 10,
                     offset: 0,
@@ -164,7 +163,6 @@
                         ?Cell grid:Y ?Y .
                     }
                 `;
-
                 query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
                     limit: 10,
                     offset: 0,
@@ -196,7 +194,6 @@
                         ?Ball3 grid:Y ?Y3 .
                     }
                 `;
-
                 query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
                     limit: 10,
                     offset: 0,
@@ -254,7 +251,6 @@
                         FILTER (?c = ?NotWall && (?c = ?Ball1 || ?c = ?BallB))
                     }
                 `;
-
                 query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
                     limit: 10,
                     offset: 0,
@@ -293,7 +289,6 @@
                         FILTER (?c = ?NotWall && ?c = ?cible)
                     }
                 `;
-
                 query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
                     limit: 10,
                     offset: 0,
@@ -381,7 +376,6 @@
                         ?dir rdf:type grid:`+side+` .
                     }
                 `;
-
                 query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
                     limit: 10,
                     offset: 0,
@@ -404,7 +398,6 @@
                         ?dir rdf:type grid:`+side+` .
                     }
                 `;
-
                 query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
                     limit: 10,
                     offset: 0,
