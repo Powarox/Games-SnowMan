@@ -47,7 +47,7 @@
         </div>
     </section>
 
-    <br><br>
+    <!-- <br><br> -->
 
     <button @click="reset_game()">Reset Game</button>
     <button @click="prepare_grid()">Start Game</button>
@@ -271,9 +271,28 @@
                         }
                     }
                     else {
-                        this.moove_Player_And_Ball(ball, ball, ball_XY, player_XY, direction, side);
+                        this.is_Wall_Behind(ball, ball, ball_XY, player_XY, direction, side);
                     }
 
+                });
+            },
+
+            is_Wall_Behind(ball, stage, ball_XY, player_XY, direction, side){
+                let query_search = `
+                    ASK WHERE {
+                        ?NotWall a grid:NotWall .
+                        ?Ball rdf:type grid:`+ball+` .
+                        ?Ball grid:hasEast ?NotWall .
+                    }
+                `;
+                query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
+                    limit: 10,
+                    offset: 0,
+                    reasoning: true
+                }).then(({ body }) => {
+                    if(body.boolean){
+                        this.moove_Player_And_Ball(ball, ball, ball_XY, player_XY, direction, side);
+                    }
                 });
             },
 
@@ -435,6 +454,10 @@
 </script>
 
 <style lang="css" scoped>
+    h1 {
+        margin: 0;
+    }
+
     .grid {
         display: grid;
         grid-template-columns: repeat(10, 1fr);
@@ -446,7 +469,7 @@
 
     .elem {
         width: 100%;
-        height: 60px;
+        height: 70px;
         max-width: 85px;
         background: #6BB34D;
         border-radius: 5px;
