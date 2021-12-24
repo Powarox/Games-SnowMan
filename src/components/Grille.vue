@@ -219,6 +219,7 @@
                             if(this.fail_1 === true || this.step_1 === true || this.succes === true){
                                 break;
                             }
+                            console.log('ball2');
                             this.is_Some_Second_Ball('Ball2', 'Ball1', 'Ball3', ball2_XY, player_XY, direction, side);
                             break;
 
@@ -259,10 +260,12 @@
                     if(body.boolean){
                         switch (ball) {
                             case 'Ball1':
+                                console.log('ici');
                                 this.is_Empilement(ball, cible1, cible2, ball_XY, player_XY, direction, side);
                                 break;
 
                             case 'Ball2':
+                                console.log('non c\'est la ...');
                                 this.is_Empilement(ball, cible1, cible2, ball_XY, player_XY, direction, side);
                                 break;
 
@@ -271,13 +274,13 @@
                         }
                     }
                     else {
-                        this.is_Wall_Behind(ball, ball, ball_XY, player_XY, direction, side);
+                        this.is_Wall_Behind(ball, ball_XY, player_XY, direction, side);
                     }
 
                 });
             },
 
-            is_Wall_Behind(ball, stage, ball_XY, player_XY, direction, side){
+            is_Wall_Behind(ball, ball_XY, player_XY, direction, side){
                 let query_search = `
                     ASK WHERE {
                         ?NotWall a grid:NotWall .
@@ -317,11 +320,13 @@
                         if(ball === 'Ball1'){
                             if(this.step_1 === true){
                                 this.succes = true;
+                                console.log('succes');
                                 this.moove_Player_And_Ball(ball, 'succes', ball_XY, player_XY, direction, side);
                                 setTimeout(() => {this.win_display(); }, 100);
                             }
                             else {
                                 this.fail_1 = true;
+                                console.log("fail1");
                                 this.moove_Player_And_Ball(ball, 'fail1', ball_XY, player_XY, direction, side);
                             }
                         }
@@ -332,10 +337,12 @@
                     else {
                         if(ball === 'Ball1'){
                             this.fail_2 = true;
+                            console.log('fail2');
                             this.moove_Player_And_Ball(ball, 'fail2', ball_XY, player_XY, direction, side);
                         }
                         else {
                             this.step_1 = true;
+                            console.log('step1');
                             this.moove_Player_And_Ball(ball, 'step1', ball_XY, player_XY, direction, side);
                         }
                     }
