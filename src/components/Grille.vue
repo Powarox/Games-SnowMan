@@ -282,7 +282,7 @@
                     ASK WHERE {
                         ?NotWall a grid:NotWall .
                         ?Ball rdf:type grid:`+ball+` .
-                        ?Ball grid:hasEast ?NotWall .
+                        ?Ball grid:`+direction+` ?NotWall .
                     }
                 `;
                 query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
