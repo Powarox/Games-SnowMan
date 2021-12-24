@@ -251,7 +251,7 @@
                         ?Ball rdf:type grid:`+ball+` .
                         ?Ball grid:`+direction+` ?c .
 
-                        FILTER ((?c = ?NotWall && ?c = ?BallA) || (?c = ?NotWall && ?c = ?BallB))
+                        FILTER (?c = ?NotWall && (?c = ?Ball1 || ?c = ?BallB))
                     }
                 `;
 

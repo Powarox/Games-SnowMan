@@ -1,0 +1,6 @@
+SELECT ?Player ?X ?Y
+WHERE {
+    ?Player a grid:PlayerCell .
+    ?Player grid:X ?X .
+    ?Player grid:Y ?Y .
+}

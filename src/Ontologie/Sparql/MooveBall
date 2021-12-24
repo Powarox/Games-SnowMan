@@ -1,0 +1,10 @@
+DELETE {
+    ?c rdf:type grid:Ball2 .
+}
+INSERT {
+    ?dir rdf:type grid:Ball2 .
+}
+WHERE {
+    ?c rdf:type grid:Ball2 .
+    ?dir rdf:type grid:isEast .
+}

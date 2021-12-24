@@ -1,0 +1,10 @@
+DELETE {
+    ?c rdf:type grid:PlayerCell .
+}
+INSERT {
+    ?dir rdf:type grid:PlayerCell .
+}
+WHERE {
+    ?c rdf:type grid:PlayerCell .
+    ?dir rdf:type grid:isEast .
+}

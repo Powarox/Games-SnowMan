@@ -1,0 +1,12 @@
+SELECT ?Ball1 ?X1 ?Y1 ?Ball2 ?X2 ?Y2 ?Ball3 ?X3 ?Y3
+WHERE {
+    ?Ball1 a grid:Ball1 .
+    ?Ball1 grid:X ?X1 .
+    ?Ball1 grid:Y ?Y1 .
+    ?Ball2 a grid:Ball2 .
+    ?Ball2 grid:X ?X2 .
+    ?Ball2 grid:Y ?Y2 .
+    ?Ball3 a grid:Ball3 .
+    ?Ball3 grid:X ?X3 .
+    ?Ball3 grid:Y ?Y3 .
+}
