@@ -9,7 +9,17 @@
         </div>
     </section>
 
-    <div class="moove">
+    <div class="win_display hidden">
+        <h2>Bravo vous avez gagné !</h2>
+        <div>
+            <i class="fas fa-trophy"></i>
+            <button @click="reset_game(); win_display()">Reset Game</button>
+            <button @click="win_display()">Close</button>
+            <i class="fas fa-trophy"></i>
+        </div>
+    </div>
+
+    <section class="moove">
         <div id="top_btn">
             <button v-on:click="moove_player('isNorth', 'hasNorth')">
                 <i class="fas fa-arrow-up"></i>  Haut  <i class="fas fa-arrow-up"></i>
@@ -35,17 +45,12 @@
                 <i class="fas fa-arrow-down"></i>  Bas  <i class="fas fa-arrow-down"></i>
             </button>
         </div>
-    </div>
+    </section>
 
     <br><br>
 
     <button @click="reset_game()">Reset Game</button>
     <button @click="prepare_grid()">Start Game</button>
-
-    <!-- <button @click="create_grid()">Create Grid</button> -->
-    <!-- <button @click="build_grid()">Build Grid</button> -->
-    <!-- <button @click="updateCss()">Update Game</button> -->
-
 </template>
 
 <script>
@@ -109,9 +114,45 @@
             },
 
             reset_game() {
-                console.log(this.grid);
-                let test = "grid:Cell_12";
-                console.log(test.split('_'));
+                let query_search = `
+                    DELETE {
+                        ?Ball1 rdf:type grid:Ball1 .
+                        ?Ball2 rdf:type grid:Ball2 .
+                        ?Ball3 rdf:type grid:Ball3 .
+                    }
+                    INSERT {
+                        ?dir1 rdf:type grid:Ball1 .
+                        ?dir2 rdf:type grid:Ball2 .
+                        ?dir3 rdf:type grid:Ball3 .
+                    }
+                    WHERE {
+                        ?Ball1 rdf:type grid:Ball1 .
+                        ?Ball2 rdf:type grid:Ball2 .
+                        ?Ball3 rdf:type grid:Ball3 .
+
+                        ?dir1 rdf:type grid:isEast .
+                        ?dir2 rdf:type grid:isNorth .
+                        ?dir3 rdf:type grid:isSouth .
+                    }
+                `;
+
+                query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
+                    limit: 10,
+                    offset: 0,
+                    reasoning: true
+                }).then(({ body }) => {
+                    this.fail_1 = false;
+                    this.fail_2 = false;
+                    this.step_1 = false;
+                    this.succes = false;
+
+                    this.delBall1();
+                    this.delBall2();
+                    this.delBall3();
+                    this.prepare_grid()
+                    return body;
+                });
+
             },
 
             moove_player(side, direction) {
@@ -263,6 +304,7 @@
                             if(this.step_1 === true){
                                 this.succes = true;
                                 this.moove_Player_And_Ball(ball, 'succes', ball_XY, player_XY, direction, side);
+                                setTimeout(() => {this.win_display(); }, 100);
                             }
                             else {
                                 this.fail_1 = true;
@@ -383,6 +425,11 @@
                     }
                 }
                 this.elem += 1;
+            },
+
+            win_display(){
+                let win_div = document.querySelector('.win_display');
+                win_div.classList.toggle('hidden');
             }
         },
 
@@ -390,14 +437,6 @@
             ...mapGetters([
                 'getGrid', 'getPlayer', 'getBall1', 'getBall2', 'getBall3'
             ]),
-
-            endGame(){
-                if(this.succes === true){
-                    // alert('Bien joué !')
-                    console.log('C\'est Gangné !');
-                }
-                return 0;
-            }
         }
     }
 </script>
@@ -415,6 +454,7 @@
     .elem {
         width: 100%;
         height: 60px;
+        max-width: 85px;
         background: #6BB34D;
         border-radius: 5px;
         margin: 5px;
@@ -422,46 +462,55 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
-        /* transition: 1s; */
     }
 
     .elem:hover {
         background: #BF4040;
     }
 
-    .moove div button {
-        width: 100px;
-        padding: 5px;
-        margin: 2px;
-        background: #333;
-        color: #DDD;
-        border: 2px solid #333;
-        border-radius: 2px;
-        font-weight: bold;
-        cursor: pointer;
+    .hidden {
+        display: none;
+    }
+
+    .win_display {
+        width: 30%;
+        height: 150px;
+        padding: 10px;
+        position: fixed;
+        top: 35%;
+        right: 35%;
+        background: #999;
+        border-radius: 20px;
+        box-shadow: 0 0 10em #BF4040;
+    }
+
+    .win_display div {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .win_display i {
+        font-size: 40px;
     }
 
     button {
-        width: 100px;
-        padding: 5px;
+        width: 130px;
+        padding: 6px;
         margin: 2px;
         background: #333;
         color: #DDD;
         border: 2px solid #333;
-        border-radius: 2px;
+        border-radius: 5px;
         font-weight: bold;
+        font-size: 17px;
+        transition: 0.6s;
         cursor: pointer;
     }
 
-    /* .moove #top_btn {
-        display: flex;
-        justify-content: center;
+    button:hover {
+        color: #333;
+        background: #6BB34D;
     }
-
-    .moove #bot_btn {
-        display: flex;
-        justify-content: center;
-    } */
 
     .Ball1 {
         background-image: url('../assets/top.png');
@@ -493,6 +542,64 @@
 
     .succes {
         background-image: url('../assets/all.png');
+    }
+
+    @media (max-width: 1150px){
+        .win_screen {
+            width: 35%;
+            right: 32.5%;
+        }
+    }
+
+    @media (max-width: 1000px){
+        .win_screen {
+            width: 40%;
+            right: 30%;
+        }
+    }
+
+    @media (max-width: 950px){
+        .win_screen {
+            width: 45%;
+            right: 27.5%;
+        }
+    }
+
+    @media (max-width: 730px){
+        .win_screen {
+            width: 50%;
+            right: 25%;
+        }
+    }
+
+    @media (min-width: 1000px){
+        .grid {
+            margin: 0 5%;
+        }
+    }
+
+    @media (min-width: 1200px){
+        .grid {
+            margin: 0 10%;
+        }
+    }
+
+    @media (min-width: 1400px){
+        .grid {
+            margin: 0 15%;
+        }
+    }
+
+    @media (min-width: 1600px){
+        .grid {
+            margin: 0 20%;
+        }
+    }
+
+    @media (min-width: 1800px){
+        .grid {
+            margin: 0 25%;
+        }
     }
 
 </style>
