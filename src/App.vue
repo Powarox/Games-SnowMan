@@ -6,14 +6,14 @@
 </template>
 
 <script>
-import Grille from './components/Grille.vue'
+    import Grille from './components/Grille.vue'
 
-export default {
-  name: 'App',
-  components: {
-    Grille
-  }
-}
+    export default {
+      name: 'App',
+      components: {
+        Grille
+      }
+    }
 </script>
 
 <style>
