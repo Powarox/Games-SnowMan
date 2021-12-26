@@ -271,7 +271,6 @@
                         }
                     }
                     else {
-                        console.log('second ball : else');
                         this.is_Wall_Behind(ball, ball_XY, player_XY, direction, side);
                     }
 
@@ -318,13 +317,11 @@
                         if(ball === 'Ball1'){
                             if(this.step_1 === true){
                                 this.succes = true;
-                                console.log('succes');
                                 this.moove_Player_And_Ball(ball, 'succes', ball_XY, player_XY, direction, side);
                                 setTimeout(() => {this.win_display(); }, 100);
                             }
                             else {
                                 this.fail_1 = true;
-                                console.log("fail1");
                                 this.moove_Player_And_Ball(ball, 'fail1', ball_XY, player_XY, direction, side);
                             }
                         }
@@ -335,12 +332,10 @@
                     else {
                         if(ball === 'Ball1'){
                             this.fail_2 = true;
-                            console.log('fail2');
                             this.moove_Player_And_Ball(ball, 'fail2', ball_XY, player_XY, direction, side);
                         }
                         else {
                             this.step_1 = true;
-                            console.log('step1');
                             this.moove_Player_And_Ball(ball, 'step1', ball_XY, player_XY, direction, side);
                         }
                     }
