@@ -219,7 +219,6 @@
                             if(this.fail_1 === true || this.step_1 === true || this.succes === true){
                                 break;
                             }
-                            console.log('ball2');
                             this.is_Some_Second_Ball('Ball2', 'Ball1', 'Ball3', ball2_XY, player_XY, direction, side);
                             break;
 
@@ -249,7 +248,7 @@
                         ?Ball rdf:type grid:`+ball+` .
                         ?Ball grid:`+direction+` ?c .
 
-                        FILTER (?c = ?NotWall && (?c = ?Ball1 || ?c = ?BallB))
+                        FILTER (?c = ?NotWall && (?c = ?BallA || ?c = ?BallB))
                     }
                 `;
                 query.execute(conn, 'ontologie_db', query_search, 'application/sparql-results+json', {
@@ -260,12 +259,10 @@
                     if(body.boolean){
                         switch (ball) {
                             case 'Ball1':
-                                console.log('ici');
                                 this.is_Empilement(ball, cible1, cible2, ball_XY, player_XY, direction, side);
                                 break;
 
                             case 'Ball2':
-                                console.log('non c\'est la ...');
                                 this.is_Empilement(ball, cible1, cible2, ball_XY, player_XY, direction, side);
                                 break;
 
@@ -274,6 +271,7 @@
                         }
                     }
                     else {
+                        console.log('second ball : else');
                         this.is_Wall_Behind(ball, ball_XY, player_XY, direction, side);
                     }
 
