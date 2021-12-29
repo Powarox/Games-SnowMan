@@ -1,5 +1,15 @@
 # snowman
 
+## Stardog
+```
+sudo docker run -it -v ~/stardog-home/:/var/opt/stardog -p 5820:5820 stardog/stardog
+```
+
+## Link
+
+- https://stardog.studio/#/
+- http://localhost:8080/
+
 ## Project setup
 ```
 npm install
