@@ -1,8 +1,0 @@
-ASK WHERE {
-    ?cible a grid:Ball1 .
-    ?NotWall a grid:NotWall .
-    ?Ball rdf:type grid:Ball2 .
-    ?Ball grid:hasNorth ?c .
-
-    FILTER (?c = ?NotWall && ?c = ?cible)
-}

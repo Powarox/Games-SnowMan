@@ -47,8 +47,6 @@
         </div>
     </section>
 
-    <!-- <br><br> -->
-
     <button @click="reset_game()">Reset Game</button>
     <button @click="prepare_grid()">Start Game</button>
 
