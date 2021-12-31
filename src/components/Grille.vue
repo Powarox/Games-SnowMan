@@ -51,6 +51,10 @@
 
     <button @click="reset_game()">Reset Game</button>
     <button @click="prepare_grid()">Start Game</button>
+
+    <!-- <div class="credit">
+        <p>@Copyright Moriniere Robin 21606393 & Mohamed Lamine Seck 21711412</p>
+    </div> -->
 </template>
 
 <script>
@@ -87,6 +91,7 @@
             ]),
 
             prepare_grid() {
+                console.log('--- Game Init ---');
                 this.build_grid('PlayerCell');
                 this.build_grid('Ball1');
                 this.build_grid('Ball2');
@@ -140,6 +145,7 @@
                     offset: 0,
                     reasoning: true
                 }).then(({ body }) => {
+                    console.log('--- Reset Game ---');
                     this.fail_1 = false;
                     this.fail_2 = false;
                     this.step_1 = false;
@@ -230,6 +236,7 @@
                             break;
 
                         default:
+                            console.log('Moove Player : ' + side);
                             this.delPlayer();
                             this.updateGrid(["PlayerCell", player_XY['X'], player_XY['Y']]);
                             this.update_Player(side);
@@ -291,6 +298,7 @@
                     reasoning: true
                 }).then(({ body }) => {
                     if(body.boolean){
+                        console.log('Moove Player and ' + ball + ' : ' + side);
                         this.moove_Player_And_Ball(ball, ball, ball_XY, player_XY, direction, side);
                     }
                 });
@@ -317,11 +325,13 @@
                         if(ball === 'Ball1'){
                             if(this.step_1 === true){
                                 this.succes = true;
+                                console.log('--- Game Succes ! ---');
                                 this.moove_Player_And_Ball(ball, 'succes', ball_XY, player_XY, direction, side);
                                 setTimeout(() => {this.win_display(); }, 100);
                             }
                             else {
                                 this.fail_1 = true;
+                                console.log('Empilement Ball1 on Ball2 : ' + side);
                                 this.moove_Player_And_Ball(ball, 'fail1', ball_XY, player_XY, direction, side);
                             }
                         }
@@ -332,10 +342,12 @@
                     else {
                         if(ball === 'Ball1'){
                             this.fail_2 = true;
+                            console.log('Empilement Ball1 on Ball3 : ' + side);
                             this.moove_Player_And_Ball(ball, 'fail2', ball_XY, player_XY, direction, side);
                         }
                         else {
                             this.step_1 = true;
+                            console.log('Empilement Ball2 on Ball3 : ' + side);
                             this.moove_Player_And_Ball(ball, 'step1', ball_XY, player_XY, direction, side);
                         }
                     }
