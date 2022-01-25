@@ -1,4 +1,4 @@
-# snowman [![](https://tokei.rs/b1/github/Powarox2159/Dataviz-Sncf)](https://github.com/Powarox2159/SnowMan)
+# snowman [![](https://tokei.rs/b1/github/Powarox2159/SnowMan?category=lines)](https://github.com/Powarox2159/SnowMan)
 
 ## Stardog
 ```
