@@ -1,4 +1,6 @@
-# snowman [![](https://tokei.rs/b1/github/Powarox2159/SnowMan?category=lines)](https://github.com/Powarox2159/SnowMan)
+# snowman 
+[![](https://tokei.rs/b1/github/Powarox2159/SnowMan?category=lines)](https://github.com/Powarox2159/SnowMan)
+[![](https://tokei.rs/b1/github/Powarox2159/SnowMan)](https://github.com/Powarox2159/SnowMan)
 
 ## Stardog
 ```
